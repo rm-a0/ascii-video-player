@@ -1,39 +1,33 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ncurses.h>
-
-#include "video_player.h"
-
-// Libs for multimedia processing
 #include <libavformat/avformat.h>   
 #include <libavcodec/avcodec.h>
 #include <libavutil/imgutils.h>
 #include <libavutil/time.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <ncurses.h>
+#include "video_player.h"
+
 // Constants
 #define CMD_WIN_HEIGHT 3
 
-// Initialize windows
-WINDOW *main_win;
-WINDOW *cmd_win;
-
 // Function for processing arguments in cmd_win
-void process_cmd(const char* cmd) {
+void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
     switch (cmd[0]) {
         case 'q':
             if (strcmp(cmd, "quit") == 0) {
-                destroy_ui();
+                destroy_ui(&main_win, &cmd_win);
                 exit(EXIT_SUCCESS);
             }
             break;
         case 'p':
             if (strcmp(cmd, "play") == 0) {
-                //play_video();
+                // Implement play_video logic here
             }
             break;
         case 's':
             if (strcmp(cmd, "stop") == 0) {
-                //stop_video();
+                // Implement stop_video logic here
             }
             break;
         default:
@@ -43,7 +37,7 @@ void process_cmd(const char* cmd) {
 }
 
 // Function that creates UI for video player
-void init_ui() {
+void init_ui(WINDOW **main_win, WINDOW **cmd_win) {
     // Initialize ncurses
     initscr();
     cbreak();               // Disable line buffering
@@ -54,53 +48,56 @@ void init_ui() {
     int main_win_width = COLS;
 
     // Create main window
-    main_win = newwin(main_win_height, main_win_width, 0, 0);
-    if (main_win == NULL) {
-        endwin();  // End ncurses mode
+    *main_win = newwin(main_win_height, main_win_width, 0, 0);
+    if (*main_win == NULL) {
+        endwin(); 
         fprintf(stderr, "Error: Unable to create main window\n");
         exit(EXIT_FAILURE);
     }
 
     // Create command window
-    cmd_win = newwin(CMD_WIN_HEIGHT, main_win_width, main_win_height, 0);
-    if (cmd_win == NULL) {
-        delwin(main_win);
+    *cmd_win = newwin(CMD_WIN_HEIGHT, main_win_width, main_win_height, 0);
+    if (*cmd_win == NULL) {
+        delwin(*main_win);
         endwin();     
         fprintf(stderr, "Error: Unable to create command window\n");
         exit(EXIT_FAILURE);
     }
 
     // Display prompt in command window
-    mvwprintw(cmd_win, 1, 1, "> ");
-    wrefresh(main_win);
-    wrefresh(cmd_win);
+    mvwprintw(*cmd_win, 1, 1, "> ");
+    wrefresh(*main_win);
+    wrefresh(*cmd_win);
 }
 
-// Function that destroys UI
-void destroy_ui() {
-    // Clean up windows
-    delwin(main_win);
-    delwin(cmd_win);
-
-    // End ncurses mode
+// Function that destroys all created windows
+void destroy_ui(WINDOW **main_win, WINDOW **cmd_win) {
+    // Clean up and exit
+    delwin(*main_win);
+    delwin(*cmd_win);
     endwin();
 }
 
 // Main function
 int main() {
-    // Create UI
-    init_ui();
+    // Initialize windows
+    WINDOW *main_win;
+    WINDOW *cmd_win;
 
+    // Create UI
+    init_ui(&main_win, &cmd_win);
+
+    // Loop for processing cmd
     char cmd[256];
     while (1) {
-        wgetstr(cmd_win, cmd);              // Get user input
-        wclear(cmd_win);                    // Clear command window
-        mvwprintw(cmd_win, 1, 1, "> ");     // Redisplay prompt
-        wrefresh(cmd_win);                  // Refresh window
-        process_cmd(cmd);                   // Process commands
+        wgetstr(cmd_win, cmd);                  // Get user input
+        wclear(cmd_win);                        // Clear command window
+        mvwprintw(cmd_win, 1, 1, "> ");         // Redisplay prompt
+        wrefresh(cmd_win);                      // Refresh window
+        process_cmd(cmd, main_win, cmd_win);    // Process commands
     }
 
-    // Destroy UI
-    destroy_ui();
+    // Clean up and exit
+    destroy_ui(&main_win, &cmd_win);
     return 0;
 }
