@@ -1,12 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ncurses.h>
+#include <string.h>
+#include <pthread.h>
+
+#include <ncurses.h>                // Lib for terminal operations
+#include <libavformat/avformat.h>   // Lib for multimedia containers
+#include <libavcodec/avcodec.h>     // Lib for multimedia codecs
 
 #include "video_player.h"
-#include "ascii_conv.h"
+#include "media_proc.h"
 
 // Constants
 #define CMD_WIN_HEIGHT 3
+// Initialize windows
+WINDOW *main_win;
+WINDOW *cmd_win;
+
+// Function that handles video thread
+void *video_thread(void *args) {
+    const char *vid_name = (const char *)args;
+    play_video(vid_name, main_win, cmd_win);  // Start video playback
+    return NULL;
+}
 
 // Function for processing arguments in cmd_win
 void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
@@ -19,12 +34,18 @@ void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
             break;
         case 'p':
             if (strcmp(cmd, "play") == 0) {
-                // play_video("eva_op.mp4");
+                // Start video playback in a new thread
+                pthread_t vid_thread;
+                const char *vid_filename = "eva_op.mp4";
+                
+                if (pthread_create(&vid_thread, NULL, video_thread, (void *)vid_filename) != 0) {
+                    fprintf(stderr, "Error: Failed to start video playback thread\n");
+                }
             }
             break;
         case 's':
             if (strcmp(cmd, "stop") == 0) {
-                // stop_video("eva_op.mp4");
+                //stop
             }
             break;
         default:
@@ -75,10 +96,6 @@ void destroy_ui(WINDOW **main_win, WINDOW **cmd_win) {
 
 // Main function
 int main() {
-    // Initialize windows
-    WINDOW *main_win;
-    WINDOW *cmd_win;
-
     // Create UI
     init_ui(&main_win, &cmd_win);
 
