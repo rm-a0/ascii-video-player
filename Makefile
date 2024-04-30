@@ -4,16 +4,21 @@
 
 CC = gcc
 CFLAGS = -g -std=c11 -pedantic -Wall -Wextra
-LDFLAGS = -lncurses
+LDPATHS = -L/usr/lib/x86_64-linux-gnu
+INCPATHS = -I/usr/include 
+LDFLAGS = -lncurses -lavformat -lavcodec -lavutil
 
 TARGETS = video_player
 
-.PHONY: all clean
+.PHONY: all run clean
 
 all: $(TARGETS)
 
 video_player: video_player.c
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $^ -o $@ $(INCPATHS) $(LDPATHS) $(LDFLAGS)
+
+run: 
+	./video_player
 
 clean:
 	rm -f $(TARGETS)
