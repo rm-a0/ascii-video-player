@@ -1,12 +1,9 @@
-#include <libavformat/avformat.h>   
-#include <libavcodec/avcodec.h>
-#include <libavutil/imgutils.h>
-#include <libavutil/time.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
+
 #include "video_player.h"
+#include "ascii_conv.h"
 
 // Constants
 #define CMD_WIN_HEIGHT 3
@@ -22,12 +19,12 @@ void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
             break;
         case 'p':
             if (strcmp(cmd, "play") == 0) {
-                // Implement play_video logic here
+                // play_video("eva_op.mp4");
             }
             break;
         case 's':
             if (strcmp(cmd, "stop") == 0) {
-                // Implement stop_video logic here
+                // stop_video("eva_op.mp4");
             }
             break;
         default:
@@ -38,8 +35,7 @@ void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
 
 // Function that creates UI for video player
 void init_ui(WINDOW **main_win, WINDOW **cmd_win) {
-    // Initialize ncurses
-    initscr();
+    initscr();              // Initialize ncurses
     cbreak();               // Disable line buffering
     keypad(stdscr, TRUE);   // Enable special keys
 
@@ -72,7 +68,6 @@ void init_ui(WINDOW **main_win, WINDOW **cmd_win) {
 
 // Function that destroys all created windows
 void destroy_ui(WINDOW **main_win, WINDOW **cmd_win) {
-    // Clean up and exit
     delwin(*main_win);
     delwin(*cmd_win);
     endwin();
