@@ -3,7 +3,7 @@
 # Compiled: gcc 11.4.0
 
 CC = gcc
-CFLAGS = -g -std=c11 -pedantic -Wall -Wextra
+CFLAGS = -g -std=c11
 LDPATHS = -L/usr/lib/x86_64-linux-gnu
 INCPATHS = -I/usr/include 
 LDFLAGS = -lncurses -lavformat -lavcodec -lavutil
