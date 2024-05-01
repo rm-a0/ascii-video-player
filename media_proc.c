@@ -12,7 +12,7 @@
 
 #define ASCII_CHARS " .,:;i1tfLCG08@"
 
-// Function for displaying error messages
+// Function that displays error messages to window
 void display_error(WINDOW *win, const char *msg) {
     werase(win);
     mvwprintw(win, 0, 0, "Error: %s", msg); 
@@ -20,17 +20,14 @@ void display_error(WINDOW *win, const char *msg) {
 }
 
 // Function that converts frame to ascii
-void frame_to_ascii(WINDOW *win, AVFrame *frame) {
+void frame_to_ascii(WINDOW *win, AVFrame *frame, int w_height, int w_width) {
     // Get frame dimensions
     int f_width = frame->width;
     int f_height = frame->height;
-    // Get window dimensions
-    int w_width = getmaxy(win);
-    int w_height = getmaxx(win);
-
-    // Define the number of characters per pixel block
-    int char_width = 3; // Each character represents a block of pixels (e.g., 3x6 block)
-    int char_height = 6;
+    
+    // Calculate how many pixels should chars cover
+    int char_width = f_width/w_width/3; // Char width is usually 3 px
+    int char_height = char_width*2;     // Char height is double its width
 
     // Draw ASCII art based on pixel luminance
     for (int y = 0; y < f_height; y += char_height) {
@@ -61,9 +58,8 @@ void frame_to_ascii(WINDOW *win, AVFrame *frame) {
 }
 
 // Function that separates video into frames
-void play_video(const char *vid_title, WINDOW *main_win, WINDOW *cmd_win) {
+void play_video(const char *vid_title, WINDOW *main_win) {
     avformat_network_init();    // Init network components
-    start_color();              // Init
 
     // Initialize necessary components
     AVCodec *codec = NULL;
@@ -136,17 +132,13 @@ void play_video(const char *vid_title, WINDOW *main_win, WINDOW *cmd_win) {
                 }
                 
                 // Display decoded frame
-                frame_to_ascii(main_win, frame);
+                frame_to_ascii(main_win, frame, getmaxx(main_win), getmaxy(main_win));
                 usleep(50000);
                 wrefresh(main_win);
             }
         }
         av_packet_unref(&packet);
     }
-    
-    // Erase window after video ends
-    werase(main_win);
-    wrefresh(main_win);
 
     // Cleanup
     av_frame_free(&frame);

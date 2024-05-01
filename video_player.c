@@ -1,8 +1,10 @@
+#define _POSIX_C_SOURCE 199309L
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include <ncurses.h>                // Lib for terminal operations
 #include <libavformat/avformat.h>   // Lib for multimedia containers
@@ -13,14 +15,16 @@
 
 // Constants
 #define CMD_WIN_HEIGHT 3
-// Initialize windows
+
+// Windows and threads
 WINDOW *main_win;
 WINDOW *cmd_win;
+pthread_t vid_thread;
 
 // Function that handles video thread
 void *video_thread(void *args) {
     const char *vid_name = (const char *)args;
-    play_video(vid_name, main_win, cmd_win);  // Start video playback
+    play_video(vid_name, main_win);  // Start video playback
     return NULL;
 }
 
@@ -35,10 +39,9 @@ void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
             break;
         case 'p':
             if (strcmp(cmd, "play") == 0) {
-                // Start video playback in a new thread
-                pthread_t vid_thread;
-                const char *vid_filename = "op_r.mp4";
+                const char *vid_filename = "eva_op.mp4";
                 
+                // Start video playback in a new thread
                 if (pthread_create(&vid_thread, NULL, video_thread, (void *)vid_filename) != 0) {
                     fprintf(stderr, "Error: Failed to start video playback thread\n");
                 }
@@ -96,11 +99,34 @@ void destroy_ui(WINDOW **main_win, WINDOW **cmd_win) {
     endwin();
 }
 
+// Function that handles window resizing
+void handle_sigwinch(int sig) {
+    // Stop video playback by canceling the thread
+    if (pthread_cancel(vid_thread) != 0) {
+        fprintf(stderr, "Error: Failed to cancel video playback thread\n");
+    }
+    endwin();        // End curses mode temporarily
+    refresh();       // Refresh standard screen
+    initscr();       // Reinitialize curses mode
+    clear();         // Clear the screen
+    init_ui(&main_win, &cmd_win);  // Reinitialize UI
+}
+
 // Main function
 int main() {
+
+    // Initialize sigaction structures for SIGWINCH 
+    struct sigaction sa_winch;
+    sa_winch.sa_handler = handle_sigwinch;
+    sa_winch.sa_flags = 0;
+    sigemptyset(&sa_winch.sa_mask);
+
+    // Set up signal handlers for SIGWINCH
+    sigaction(SIGWINCH, &sa_winch, NULL);
+
     // Create UI
     init_ui(&main_win, &cmd_win);
-
+    
     // Loop for processing cmd
     char cmd[256];
     while (1) {
