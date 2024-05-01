@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+#include <unistd.h>
 
 #include <ncurses.h>                // Lib for terminal operations
 #include <libavformat/avformat.h>   // Lib for multimedia containers
@@ -36,7 +37,7 @@ void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
             if (strcmp(cmd, "play") == 0) {
                 // Start video playback in a new thread
                 pthread_t vid_thread;
-                const char *vid_filename = "eva_op.mp4";
+                const char *vid_filename = "op_r.mp4";
                 
                 if (pthread_create(&vid_thread, NULL, video_thread, (void *)vid_filename) != 0) {
                     fprintf(stderr, "Error: Failed to start video playback thread\n");
@@ -59,6 +60,7 @@ void init_ui(WINDOW **main_win, WINDOW **cmd_win) {
     initscr();              // Initialize ncurses
     cbreak();               // Disable line buffering
     keypad(stdscr, TRUE);   // Enable special keys
+    curs_set(0);            // Disable cursos
 
     // Calculate dimensions for main and command windows
     int main_win_height = LINES - CMD_WIN_HEIGHT;

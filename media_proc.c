@@ -1,3 +1,5 @@
+#define _XOPEN_SOURCE 500           // Solves uslees compilation issues
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -10,6 +12,7 @@
 
 #define ASCII_CHARS " .,:;i1tfLCG08@"
 
+// Function for displaying error messages
 void display_error(WINDOW *win, const char *msg) {
     werase(win);
     mvwprintw(win, 0, 0, "Error: %s", msg); 
@@ -59,8 +62,8 @@ void frame_to_ascii(WINDOW *win, AVFrame *frame) {
 
 // Function that separates video into frames
 void play_video(const char *vid_title, WINDOW *main_win, WINDOW *cmd_win) {
-    // Initialize network components
-    avformat_network_init();
+    avformat_network_init();    // Init network components
+    start_color();              // Init
 
     // Initialize necessary components
     AVCodec *codec = NULL;
@@ -112,7 +115,6 @@ void play_video(const char *vid_title, WINDOW *main_win, WINDOW *cmd_win) {
         return;
     }
 
-    int frame_count;
     // Read frames from the video
     while (av_read_frame(format_ctx, &packet) >= 0) {
         if (packet.stream_index == video_stream_index) {
@@ -141,6 +143,10 @@ void play_video(const char *vid_title, WINDOW *main_win, WINDOW *cmd_win) {
         }
         av_packet_unref(&packet);
     }
+    
+    // Erase window after video ends
+    werase(main_win);
+    wrefresh(main_win);
 
     // Cleanup
     av_frame_free(&frame);
