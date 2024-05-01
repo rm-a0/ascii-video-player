@@ -8,6 +8,8 @@
 
 #include "video_player.h"
 
+#define ASCII_CHARS " .,:;i1tfLCG08@"
+
 void display_error(WINDOW *win, const char *msg) {
     werase(win);
     mvwprintw(win, 0, 0, "Error: %s", msg); 
@@ -16,7 +18,43 @@ void display_error(WINDOW *win, const char *msg) {
 
 // Function that converts frame to ascii
 void frame_to_ascii(WINDOW *win, AVFrame *frame) {
+    // Get frame dimensions
+    int f_width = frame->width;
+    int f_height = frame->height;
+    // Get window dimensions
+    int w_width = getmaxy(win);
+    int w_height = getmaxx(win);
 
+    // Define the number of characters per pixel block
+    int char_width = 3; // Each character represents a block of pixels (e.g., 3x6 block)
+    int char_height = 6;
+
+    // Draw ASCII art based on pixel luminance
+    for (int y = 0; y < f_height; y += char_height) {
+        for (int x = 0; x < f_width; x += char_width) {
+            // Calculate average luminance for the block of pixels
+            int total_luminance = 0;
+            int num_pixels = 0;
+
+            for (int dy = 0; dy < char_height && (y + dy) < f_height; dy++) {
+                for (int dx = 0; dx < char_width && (x + dx) < f_width; dx++) {
+                    int luminance = frame->data[0][(y + dy) * frame->linesize[0] + (x + dx)];
+                    total_luminance += luminance;
+                    num_pixels++;
+                }
+            }
+
+            // Calculate average luminance value for the block
+            int average_luminance = total_luminance / num_pixels;
+
+            // Map luminance value to ASCII character index
+            int ascii_index = (average_luminance * strlen(ASCII_CHARS)) / 256;
+            char ascii_char = ASCII_CHARS[ascii_index];
+
+            // Draw ASCII character on the window
+            mvwaddch(win, y / char_height, x / char_width, ascii_char);
+        }
+    }
 }
 
 // Function that separates video into frames
@@ -96,9 +134,8 @@ void play_video(const char *vid_title, WINDOW *main_win, WINDOW *cmd_win) {
                 }
                 
                 // Display decoded frame
-                werase(main_win);
                 frame_to_ascii(main_win, frame);
-                usleep(100000);
+                usleep(50000);
                 wrefresh(main_win);
             }
         }
