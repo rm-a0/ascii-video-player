@@ -12,4 +12,7 @@ Implement Pause button
 Implement dynamic resizing when video is playing
 Add additional commands (video quality, speed, help function...)
 
-# How to use
+# How to use (will be updated)
+Download this repository \
+Compile using "make" (install ncurses and ffmpeg before compilation) \
+Run using "make run" or "./video_player"
