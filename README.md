@@ -1,5 +1,7 @@
 # Overview
-ASCII Media Player written in C using ncurses and ffmpeg-dev libraries.
+ASCII Media Player written in C. \
+Terminal layout is done using ncurses library. \
+Video decoding is done using ffmpeg-dev libraries.
 
 # Bugs and Issues
 Resizing sometimes causes crash (fixed) \
