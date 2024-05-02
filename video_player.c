@@ -37,12 +37,20 @@ void *video_thread(void *args) {
 // Function for processing arguments in cmd_win
 void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
     switch (cmd[0]) {
+        // EXIT and QUIT
+        case 'e':
+            if (stcmp(cmd, "exit") == 0) {
+                destroy_ui(&main_win, &cmd_win);
+                exit(EXIT_SUCCESS);
+            }
+            break;
         case 'q':
             if (strcmp(cmd, "quit") == 0) {
                 destroy_ui(&main_win, &cmd_win);
                 exit(EXIT_SUCCESS);
             }
             break;
+        // PLAY
         case 'p':
             if (strcmp(cmd, "play") == 0) {
                 const char *vid_filename = "eva_op.mp4";
@@ -53,9 +61,10 @@ void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
                 }
             }
             break;
+        // STOP
         case 's':
             if (strcmp(cmd, "stop") == 0) {
-                //stop
+                
             }
             break;
         default:
