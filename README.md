@@ -14,7 +14,7 @@ Add additional commands (video quality, speed, help function...)
 
 # How to use (will be updated)
 Download this repository \
-Compile using (install ncurses and ffmpeg before compilation) \
+Compile using (install ncurses and ffmpeg before compilation)
 <pre>
   make
 </pre>
