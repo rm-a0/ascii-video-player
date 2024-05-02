@@ -1,10 +1,11 @@
-#define _POSIX_C_SOURCE 199309L
+#define _POSIX_C_SOURCE 199309L     // sigaction
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h>
 #include <unistd.h>
+#include <pthread.h>
 #include <signal.h>
+#include <semaphore.h>
 
 #include <ncurses.h>                // Lib for terminal operations
 #include <libavformat/avformat.h>   // Lib for multimedia containers
@@ -16,10 +17,15 @@
 // Constants
 #define CMD_WIN_HEIGHT 3
 
-// Windows and threads
-WINDOW *main_win;
-WINDOW *cmd_win;
+// Global variables
+// Windows
+WINDOW *main_win = NULL;
+WINDOW *cmd_win = NULL;
+// Threads
 pthread_t vid_thread;
+// Semaphores
+sem_t mutex;
+volatile sig_atomic_t winch_flag = 0;
 
 // Function that handles video thread
 void *video_thread(void *args) {
@@ -99,22 +105,13 @@ void destroy_ui(WINDOW **main_win, WINDOW **cmd_win) {
     endwin();
 }
 
-// Function that handles window resizing
+// Function that handles SIGWINCH (window change)
 void handle_sigwinch(int sig) {
-    // Stop video playback by canceling the thread
-    if (pthread_cancel(vid_thread) != 0) {
-        fprintf(stderr, "Error: Failed to cancel video playback thread\n");
-    }
-    endwin();        // End curses mode temporarily
-    refresh();       // Refresh standard screen
-    initscr();       // Reinitialize curses mode
-    clear();         // Clear the screen
-    init_ui(&main_win, &cmd_win);  // Reinitialize UI
-}
+    winch_flag = 1;
+}   
 
-// Main function
-int main() {
-
+// Function that initializes structs for signals
+void init_sig() {
     // Initialize sigaction structures for SIGWINCH 
     struct sigaction sa_winch;
     sa_winch.sa_handler = handle_sigwinch;
@@ -123,21 +120,48 @@ int main() {
 
     // Set up signal handlers for SIGWINCH
     sigaction(SIGWINCH, &sa_winch, NULL);
+}
 
-    // Create UI
-    init_ui(&main_win, &cmd_win);
-    
+// Function that initializes semaphores
+void init_sem() {
+    sem_init(&mutex, 1, 1);
+}
+
+// Function that destroys semaphores
+void destroy_sem() {
+    sem_destroy(&mutex);
+}
+
+// Main function
+int main() {
+    init_ui(&main_win, &cmd_win);   // Init windows
+    init_sig();                     // Init signals
+    init_sem();                     // Init semaphores
+    char cmd[256];                  // Init command buffer
+
     // Loop for processing cmd
-    char cmd[256];
     while (1) {
-        wgetstr(cmd_win, cmd);                  // Get user input
-        wclear(cmd_win);                        // Clear command window
-        mvwprintw(cmd_win, 1, 1, "> ");         // Redisplay prompt
-        wrefresh(cmd_win);                      // Refresh window
-        process_cmd(cmd, main_win, cmd_win);    // Process commands
+        if (winch_flag != 1) {
+            wgetstr(cmd_win, cmd);                  // Get user input
+            wclear(cmd_win);                        // Clear command window
+            mvwprintw(cmd_win, 1, 1, "> ");         // Redisplay ">"
+            wrefresh(cmd_win);                      // Refresh window
+            
+            mvwprintw(main_win, 1, 1, "signal flag: %d", (int)winch_flag);         // Redisplay ">"
+            wrefresh(main_win); 
+
+            process_cmd(cmd, main_win, cmd_win);    // Process commands
+        }
+        else {
+            // Resize ui
+            destroy_ui(&main_win, &cmd_win);
+            init_ui(&main_win, &cmd_win);
+            winch_flag = 0;
+        }
     }
 
     // Clean up and exit
+    destroy_sem();
     destroy_ui(&main_win, &cmd_win);
     return 0;
 }
