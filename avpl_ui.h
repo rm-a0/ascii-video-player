@@ -30,7 +30,7 @@ typedef struct wins {
  * 
  * Parameters
  * ----------
- * void
+ * cmd_win_height - height of command line window
  * 
  * Return value
  * ------------

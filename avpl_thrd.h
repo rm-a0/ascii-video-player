@@ -6,8 +6,8 @@
 #ifndef AVPL_THRD_H__
 #define AVPL_THRD_H__
 
-#include <pthread.h>    // threads
-#include <ncurses.h>    // WINDOW
+#include <pthread.h>
+#include <ncurses.h>
 
 #include "avpl_sem.h"
 
