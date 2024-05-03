@@ -8,7 +8,7 @@
 
 #include "avpl_thrd.h"
 
-// Unpacks arguments and passes to play_video function
+// Unpacks arguments and passes them to play_video function
 void *video_thread(void *args) {
     thrd_args_t *thrd_args = (thrd_args_t*)args;
 
