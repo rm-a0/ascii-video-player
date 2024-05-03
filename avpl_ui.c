@@ -1,4 +1,4 @@
-/* avpl_ui.h
+/* avpl_ui.c
  * ----------------------
  * Author:  Michal Repcik
  * Date:    05.03.2024

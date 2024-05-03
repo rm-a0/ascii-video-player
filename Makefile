@@ -1,8 +1,10 @@
 # Makefile
-# Author: Michal Repčík, FIT
-# Compiled: gcc 11.4.0
+# ---------------------
+# Author: Michal Repcik
+# Date: 05.03.2024
 
 #TODO
+#	Dynamically allocate sems_t struct
 #	Add semaphores for resizing FIX SEGFAULT
 #	Center video and adjust resizing (for heigh videos)
 #	Add signals for segfaults
@@ -17,7 +19,6 @@ LDFLAGS = -lncurses -lavformat -lavcodec -lavutil -lrt -lpthread
 
 SRCS = video_player.c media_proc.c avpl_thrd.c avpl_sem.c
 
-# Define object files corresponding to each source file
 OBJS = $(SRCS:.c=.o)
 
 TARGETS = video_player
