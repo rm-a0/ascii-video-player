@@ -5,17 +5,31 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <signal.h>
-#include <semaphore.h>
 
 #include <ncurses.h>                // Lib for terminal operations
 #include <libavformat/avformat.h>   // Lib for multimedia containers
 #include <libavcodec/avcodec.h>     // Lib for multimedia codecs
 
-#include "video_player.h"
+#include "avpl_sem.h"               // Lib for semaphores
+#include "avpl_thrd.h"              // Lib for threads
+                                    // Lib for flags
+                                    // Lib for user interface
+                                    // Lib for media processing
+#include "video_player.h"           
 #include "media_proc.h"
 
 // Constants
 #define CMD_WIN_HEIGHT 3
+
+typedef struct windows {
+    WINDOW *main_win;
+    WINDOW *cmd_win;
+} windows_t;
+
+typedef struct flags {
+    volatile sig_atomic_t winch_flag;
+} flags_t;
+
 
 // Global variables
 // Windows
@@ -24,22 +38,14 @@ WINDOW *cmd_win = NULL;
 // Threads
 pthread_t vid_thread;
 // Semaphores
-sem_t mutex;
 volatile sig_atomic_t winch_flag = 0;
-
-// Function that handles video thread
-void *video_thread(void *args) {
-    const char *vid_name = (const char *)args;
-    play_video(vid_name, main_win);  // Start video playback
-    return NULL;
-}
 
 // Function for processing arguments in cmd_win
 void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
     switch (cmd[0]) {
         // EXIT and QUIT
         case 'e':
-            if (stcmp(cmd, "exit") == 0) {
+            if (strcmp(cmd, "exit") == 0) {
                 destroy_ui(&main_win, &cmd_win);
                 exit(EXIT_SUCCESS);
             }
@@ -53,10 +59,13 @@ void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
         // PLAY
         case 'p':
             if (strcmp(cmd, "play") == 0) {
-                const char *vid_filename = "eva_op.mp4";
-                
+                char *vid_filename = "eva_op.mp4";
+
+                thrd_args_t *thread_args = malloc(sizeof(thrd_args_t));
+                thread_args->filename = vid_filename;
+                thread_args->win = main_win;
                 // Start video playback in a new thread
-                if (pthread_create(&vid_thread, NULL, video_thread, (void *)vid_filename) != 0) {
+                if (pthread_create(&vid_thread, NULL, video_thread, (void *)thread_args) != 0) {
                     fprintf(stderr, "Error: Failed to start video playback thread\n");
                 }
             }
@@ -131,21 +140,12 @@ void init_sig() {
     sigaction(SIGWINCH, &sa_winch, NULL);
 }
 
-// Function that initializes semaphores
-void init_sem() {
-    sem_init(&mutex, 1, 1);
-}
-
-// Function that destroys semaphores
-void destroy_sem() {
-    sem_destroy(&mutex);
-}
-
 // Main function
 int main() {
-    init_ui(&main_win, &cmd_win);   // Init windows
+    sems_t sems;                    // Init sems struct
     init_sig();                     // Init signals
-    init_sem();                     // Init semaphores
+    init_sems(&sems);                // Init semaphores
+    init_ui(&main_win, &cmd_win);   // Init windows
     char cmd[256];                  // Init command buffer
 
     // Loop for processing cmd
@@ -170,7 +170,7 @@ int main() {
     }
 
     // Clean up and exit
-    destroy_sem();
+    destroy_sems(&sems);
     destroy_ui(&main_win, &cmd_win);
     return 0;
 }

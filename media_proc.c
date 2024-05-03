@@ -58,7 +58,7 @@ void frame_to_ascii(WINDOW *win, AVFrame *frame, int w_height, int w_width) {
 }
 
 // Function that separates video into frames
-void play_video(const char *vid_title, WINDOW *main_win) {
+void play_video(char *vid_title, WINDOW *main_win) {
     avformat_network_init();    // Init network components
 
     // Initialize necessary components
@@ -66,6 +66,11 @@ void play_video(const char *vid_title, WINDOW *main_win) {
     AVPacket packet;
     AVFrame *frame = NULL;
     int video_stream_index;
+
+    if (main_win == NULL) {
+        fprintf(stderr, "Null pointer to main win");
+        exit(EXIT_FAILURE);
+    }
 
     // Open video file
     AVFormatContext *format_ctx = NULL;
@@ -127,7 +132,7 @@ void play_video(const char *vid_title, WINDOW *main_win) {
                 if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
                     break;
                 else if (ret < 0) {
-                    display_error(main_win, "Failed to retrieve freame from codec");
+                    display_error(main_win, "Failed to retrieve frame from codec");
                     break;
                 }
                 
