@@ -12,11 +12,12 @@
 #include "avpl_sem.h"
 
 /* Struct: thrd_args
- * ---------------
+ * -----------------
  * Structure holding all arguments necessary
  * for creating video thread
  * 
- * Variables:
+ * Variables
+ * ---------
  * filename - path to a video that should be played
  * win - pointer to a window where the media should be played
  * sems - struct containing semaphores
@@ -31,11 +32,13 @@ typedef struct thrd_args {
  * ----------------------
  * This function is repsonsible for video playback in antoher thread
  * 
- * Parameters:
- * args - generic pointer to arguments that are passed
- *        to functions within the thread 
- * Return value:
- * generic pointer void
+ * Parameters
+ * ----------
+ * args - generic pointer to necessary arguments (thrd_args_t)
+ * 
+ * Return value
+ * ------------
+ * generic void pointer
 */
 void *video_thread(void *args);
 

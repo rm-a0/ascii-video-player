@@ -24,10 +24,12 @@ typedef struct sems {
  * -------------------
  * Initializes all semaphores in sems_t struct
  * 
- * Parameters:
+ * Parameters
+ * ----------
  * sems - pointer to struct holding semaphores
  * 
- * Return value:
+ * Return value
+ * ------------
  * void
 */
 void init_sems(sems_t *sems);
@@ -36,10 +38,12 @@ void init_sems(sems_t *sems);
  * ----------------------
  * Destroys all semaphores in sems_t struct
  * 
- * Parameters:
+ * Parameters
+ * ----------
  * sems - pointer to struct holding semaphores
  * 
- * Return value:
+ * Return value
+ * ------------
  * void
 */
 void destroy_sems(sems_t *sems);
