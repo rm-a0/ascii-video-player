@@ -12,8 +12,9 @@
  * --------------
  * Structure holding all semaphores
  * 
- * Variables:
- * mutex     - main semaphore for mutual exclusion
+ * Variables
+ * ---------
+ * mutex - main semaphore for mutual exclusion
  * pause_sem - semaphore used for pausing a video
 */
 typedef struct sems {
