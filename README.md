@@ -4,10 +4,10 @@ Terminal layout is done using ncurses library. \
 Video decoding is done using ffmpeg-dev libraries.
 
 # Bugs and Issues
-Resizing sometimes causes crash (fixed) \
+Resizing sometimes causes crash (FIXED) \
 Resizing doesnt work properly when video is playing \
-Window is sometimes not resized properly (when using dynamic resizing) \
-Memory leaks after exiting program 
+Window is sometimes not resized properly (FIXED) \
+Memory leaks after exiting program (fixed in main)
 
 # TODO
 Implement Pause button
