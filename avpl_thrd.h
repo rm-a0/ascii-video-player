@@ -1,7 +1,7 @@
 /* avpl_thrd.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    05.03.2024
+ * Date:    06.03.2024
 */
 #ifndef AVPL_THRD_H__
 #define AVPL_THRD_H__
@@ -41,5 +41,21 @@ typedef struct thrd_args {
  * generic void pointer
 */
 void *video_thread(void *args);
+
+/* Function: init_thrd_args
+ * ------------------------
+ * Dynammically allocates memory for thrd_args_t struct
+ * Assigns parameters to variables within the struct
+ * 
+ * Parameters
+ * ----------
+ * win - pointer to a window
+ * filename - name of the media file
+ * 
+ * Return value
+ * ------------
+ * pointer to a thrd_args_t struct
+*/
+thrd_args_t* init_thrd_args(WINDOW* win, char* filename);
 
 #endif // AVPL_THRD_H__

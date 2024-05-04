@@ -13,7 +13,7 @@
 #include "avpl_sem.h"               // Lib for semaphores
 #include "avpl_thrd.h"              // Lib for threads
                                     // Lib for flags
-                                    // Lib for user interface
+#include "avpl_ui.h"                // Lib for user interface
                                     // Lib for media processing
 #include "video_player.h"           
 #include "media_proc.h"
@@ -21,51 +21,42 @@
 // Constants
 #define CMD_WIN_HEIGHT 3
 
-typedef struct windows {
-    WINDOW *main_win;
-    WINDOW *cmd_win;
-} windows_t;
-
 typedef struct flags {
     volatile sig_atomic_t winch_flag;
 } flags_t;
 
-
-// Global variables
-// Windows
-WINDOW *main_win = NULL;
-WINDOW *cmd_win = NULL;
 // Threads
 pthread_t vid_thread;
-// Semaphores
 volatile sig_atomic_t winch_flag = 0;
 
 // Function for processing arguments in cmd_win
-void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
+int process_cmd(const char* cmd, wins_t* wins) {
     switch (cmd[0]) {
         // EXIT and QUIT
         case 'e':
             if (strcmp(cmd, "exit") == 0) {
-                destroy_ui(&main_win, &cmd_win);
-                exit(EXIT_SUCCESS);
+                return 1;
             }
             break;
         case 'q':
             if (strcmp(cmd, "quit") == 0) {
-                destroy_ui(&main_win, &cmd_win);
-                exit(EXIT_SUCCESS);
+                return 1;
             }
             break;
         // PLAY
         case 'p':
             if (strcmp(cmd, "play") == 0) {
-                char *vid_filename = "eva_op.mp4";
+                char *vid_filename = "fate.mp4";
 
-                thrd_args_t *thread_args = malloc(sizeof(thrd_args_t));
-                thread_args->filename = vid_filename;
-                thread_args->win = main_win;
+                // Allocate memory for threads
+                // DO NOT PLAY TWICE ==> SEGFAULT
+                // Fix in the future
+                // move malloc somewhere else
+                // create function for struct malloc
+                thrd_args_t *thrd_args = init_thrd_args(wins->main_win, vid_filename);
+
                 // Start video playback in a new thread
-                if (pthread_create(&vid_thread, NULL, video_thread, (void *)thread_args) != 0) {
+                if (pthread_create(&vid_thread, NULL, video_thread, (void *)thrd_args) != 0) {
                     fprintf(stderr, "Error: Failed to start video playback thread\n");
                 }
             }
@@ -77,50 +68,10 @@ void process_cmd(const char* cmd, WINDOW *main_win, WINDOW *cmd_win) {
             }
             break;
         default:
-            wrefresh(cmd_win);
+            wrefresh(wins->cmd_win);
             break;
     }
-}
-
-// Function that creates UI for video player
-void init_ui(WINDOW **main_win, WINDOW **cmd_win) {
-    initscr();              // Initialize ncurses
-    cbreak();               // Disable line buffering
-    keypad(stdscr, TRUE);   // Enable special keys
-    curs_set(0);            // Disable cursos
-
-    // Calculate dimensions for main and command windows
-    int main_win_height = LINES - CMD_WIN_HEIGHT;
-    int main_win_width = COLS;
-
-    // Create main window
-    *main_win = newwin(main_win_height, main_win_width, 0, 0);
-    if (*main_win == NULL) {
-        endwin(); 
-        fprintf(stderr, "Error: Unable to create main window\n");
-        exit(EXIT_FAILURE);
-    }
-
-    // Create command window
-    *cmd_win = newwin(CMD_WIN_HEIGHT, main_win_width, main_win_height, 0);
-    if (*cmd_win == NULL) {
-        delwin(*main_win);
-        endwin();     
-        fprintf(stderr, "Error: Unable to create command window\n");
-        exit(EXIT_FAILURE);
-    }
-
-    // Display prompt in command window
-    mvwprintw(*cmd_win, 1, 1, "> ");
-    wrefresh(*main_win);
-    wrefresh(*cmd_win);
-}
-
-// Function that destroys all created windows
-void destroy_ui(WINDOW **main_win, WINDOW **cmd_win) {
-    delwin(*main_win);
-    delwin(*cmd_win);
-    endwin();
+    return 0;
 }
 
 // Function that handles SIGWINCH (window change)
@@ -142,35 +93,60 @@ void init_sig() {
 
 // Main function
 int main() {
-    sems_t sems;                    // Init sems struct
-    init_sig();                     // Init signals
-    init_sems(&sems);                // Init semaphores
-    init_ui(&main_win, &cmd_win);   // Init windows
-    char cmd[256];                  // Init command buffer
+    initscr();              // Initialize the screen
+    cbreak();               // Disable line buffering
+    keypad(stdscr, TRUE);   // Enable keypad for function and arrow keys
+    curs_set(0);            // Hide cursor
 
-    // Loop for processing cmd
+    sems_t sems;            // Init sems struct
+    init_sems(&sems);       // Init semaphores
+
+    init_sig();             // Init signals
+    
+    // Init windows
+    wins_t* wins = init_ui(CMD_WIN_HEIGHT);
+    if (wins == NULL) {
+        fprintf(stderr, "Failed to allocate memory for wins_t struct\n");
+        endwin();
+        return 1;
+    }
+
+    // Display '>' in cmd_win
+    mvwprintw(wins->cmd_win, 1, 1, "> ");
+    wrefresh(wins->cmd_win);                  
+
+    // Loop for processing commands
+    char cmd[256];
     while (1) {
         if (winch_flag != 1) {
-            wgetstr(cmd_win, cmd);                  // Get user input
-            wclear(cmd_win);                        // Clear command window
-            mvwprintw(cmd_win, 1, 1, "> ");         // Redisplay ">"
-            wrefresh(cmd_win);                      // Refresh window
+            // Get user input
+            wgetstr(wins->cmd_win, cmd);
+            wclear(wins->cmd_win);                   
             
-            mvwprintw(main_win, 1, 1, "signal flag: %d", (int)winch_flag);         // Redisplay ">"
-            wrefresh(main_win); 
+            // Redisplay ">"
+            mvwprintw(wins->main_win, 1, 1, "signal flag: %d", (int)winch_flag);
+            wrefresh(wins->main_win); 
 
-            process_cmd(cmd, main_win, cmd_win);    // Process commands
+            // Process commands
+            if ((process_cmd(cmd, wins)) == 1) {
+                break;
+            } 
         }
         else {
             // Resize ui
-            destroy_ui(&main_win, &cmd_win);
-            init_ui(&main_win, &cmd_win);
+            destroy_ui(wins);
+            wins = init_ui(CMD_WIN_HEIGHT);
+
+            // Redisplay '>'
+            mvwprintw(wins->cmd_win, 1, 1, "> ");
+            wrefresh(wins->cmd_win);
             winch_flag = 0;
-        }
+            }
     }
 
     // Clean up and exit
     destroy_sems(&sems);
-    destroy_ui(&main_win, &cmd_win);
+    destroy_ui(wins);
+    endwin();
     return 0;
 }

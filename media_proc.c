@@ -5,10 +5,9 @@
 #include <unistd.h>
 
 #include <ncurses.h>                // Lib for terminal operations
-#include <libavformat/avformat.h>   // Lib for multimedia containers
-#include <libavcodec/avcodec.h>     // Lib for multimedia codecs
 
 #include "video_player.h"
+#include "media_proc.h"
 
 #define ASCII_CHARS " .,:;i1tfLCG08@"
 

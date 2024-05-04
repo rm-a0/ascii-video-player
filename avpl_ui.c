@@ -1,7 +1,7 @@
 /* avpl_ui.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    05.03.2024
+ * Date:    06.03.2024
 */
 #include <stdlib.h>
 
@@ -13,7 +13,6 @@ wins_t* init_ui(int cmd_win_height) {
     if (wins == NULL) {
         return NULL;
     }
-
     // Calculate window dimensions
     int main_win_height = LINES - cmd_win_height;
     int main_win_width = COLS;
