@@ -1,7 +1,7 @@
 /* avpl_ui.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    05.03.2024
+ * Date:    06.03.2024
 */
 #ifndef AVPL_UI_H__
 #define AVPL_UI_H__
@@ -36,7 +36,7 @@ typedef struct wins {
  * ------------
  * pointer to a wins_t struct
 */
-wins_t* init_ui();
+wins_t* init_ui(int cmd_win_height);
 
 /* Function: destroy_ui
  * --------------------
