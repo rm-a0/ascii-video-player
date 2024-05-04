@@ -17,7 +17,7 @@ LDPATHS = -L/usr/lib/x86_64-linux-gnu
 INCPATHS = -I/usr/include
 LDFLAGS = -lncurses -lavformat -lavcodec -lavutil -lrt -lpthread
 
-SRCS = video_player.c media_proc.c avpl_thrd.c avpl_sem.c
+SRCS = video_player.c media_proc.c avpl_thrd.c avpl_sem.c avpl_ui.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -1,3 +1,8 @@
+/* video_player.c
+ * ----------------------
+ * Author:  Michal Repcik
+ * Date:    06.03.2024
+*/
 #define _POSIX_C_SOURCE 199309L     // sigaction
 #include <stdio.h>
 #include <stdlib.h>
@@ -124,8 +129,8 @@ int main() {
             wclear(wins->cmd_win);                   
             
             // Redisplay ">"
-            mvwprintw(wins->main_win, 1, 1, "signal flag: %d", (int)winch_flag);
-            wrefresh(wins->main_win); 
+            mvwprintw(wins->cmd_win, 1, 1, "> ");
+            wrefresh(wins->cmd_win); 
 
             // Process commands
             if ((process_cmd(cmd, wins)) == 1) {
