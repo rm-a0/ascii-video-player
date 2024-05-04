@@ -1,38 +1,42 @@
 /* video_player.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    06.03.2024
+ * Date:    06.04.2024
 */
-#define _POSIX_C_SOURCE 199309L     // sigaction
+#define _POSIX_C_SOURCE 199309L     // Sigaction
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <pthread.h>
-#include <signal.h>
-
-#include <ncurses.h>                // Lib for terminal operations
-#include <libavformat/avformat.h>   // Lib for multimedia containers
-#include <libavcodec/avcodec.h>     // Lib for multimedia codecs
 
 #include "avpl_sem.h"               // Lib for semaphores
 #include "avpl_thrd.h"              // Lib for threads
-                                    // Lib for flags
+#include "avpl_flags.h"             // Lib for flags
 #include "avpl_ui.h"                // Lib for user interface
-                                    // Lib for media processing
-#include "video_player.h"           
-#include "media_proc.h"
+#include "media_proc.h"             // Lib for media processing
 
 // Constants
 #define CMD_WIN_HEIGHT 3
 
-typedef struct flags {
-    volatile sig_atomic_t winch_flag;
-} flags_t;
-
 // Threads
 pthread_t vid_thread;
-volatile sig_atomic_t winch_flag = 0;
+// Flags
+flags_t flags;
+
+void handle_sigwinch(int sig) {
+    flags.winch_flag = 1;
+}   
+
+void init_sig() {
+    // Initialize sigaction structures for SIGWINCH 
+    struct sigaction sa_winch;
+    sa_winch.sa_handler = handle_sigwinch;
+    sa_winch.sa_flags = 0;
+    sigemptyset(&sa_winch.sa_mask);
+
+    // Set up signal handlers for SIGWINCH
+    sigaction(SIGWINCH, &sa_winch, NULL);
+}
 
 // Function for processing arguments in cmd_win
 int process_cmd(const char* cmd, wins_t* wins) {
@@ -79,23 +83,6 @@ int process_cmd(const char* cmd, wins_t* wins) {
     return 0;
 }
 
-// Function that handles SIGWINCH (window change)
-void handle_sigwinch(int sig) {
-    winch_flag = 1;
-}   
-
-// Function that initializes structs for signals
-void init_sig() {
-    // Initialize sigaction structures for SIGWINCH 
-    struct sigaction sa_winch;
-    sa_winch.sa_handler = handle_sigwinch;
-    sa_winch.sa_flags = 0;
-    sigemptyset(&sa_winch.sa_mask);
-
-    // Set up signal handlers for SIGWINCH
-    sigaction(SIGWINCH, &sa_winch, NULL);
-}
-
 // Main function
 int main() {
     initscr();              // Initialize the screen
@@ -123,14 +110,14 @@ int main() {
     // Loop for processing commands
     char cmd[256];
     while (1) {
-        if (winch_flag != 1) {
+        if (flags.winch_flag != 1) {
             // Get user input
             wgetstr(wins->cmd_win, cmd);
             wclear(wins->cmd_win);                   
             
             // Redisplay ">"
             mvwprintw(wins->cmd_win, 1, 1, "> ");
-            wrefresh(wins->cmd_win); 
+            wrefresh(wins->cmd_win);
 
             // Process commands
             if ((process_cmd(cmd, wins)) == 1) {
@@ -139,14 +126,17 @@ int main() {
         }
         else {
             // Resize ui
+            wclear(wins->cmd_win);
+    
+            // Destroy and reinitialize UI
             destroy_ui(wins);
+            endwin();
+            initscr();
             wins = init_ui(CMD_WIN_HEIGHT);
 
-            // Redisplay '>'
-            mvwprintw(wins->cmd_win, 1, 1, "> ");
-            wrefresh(wins->cmd_win);
-            winch_flag = 0;
-            }
+            // Reset winch_flag
+            flags.winch_flag = 0;
+        }
     }
 
     // Clean up and exit
