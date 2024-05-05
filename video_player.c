@@ -3,7 +3,6 @@
  * Author:  Michal Repcik
  * Date:    06.04.2024
 */
-#define _POSIX_C_SOURCE 199309L     // Sigaction
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
