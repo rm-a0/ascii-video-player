@@ -38,6 +38,7 @@ void init_sig();
 /* Function: handle_winch
  * -------------------
  * Sets winch_flag when window change is detected
+ * Must be defined in main
  * 
  * Parameters
  * ----------

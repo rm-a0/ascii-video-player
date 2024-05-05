@@ -1,7 +1,7 @@
 # Makefile
 # ---------------------
 # Author: Michal Repcik
-# Date: 05.03.2024
+# Date: 06.04.2024
 
 #TODO
 #	Dynamically allocate sems_t struct
@@ -17,7 +17,7 @@ LDPATHS = -L/usr/lib/x86_64-linux-gnu
 INCPATHS = -I/usr/include
 LDFLAGS = -lncurses -lavformat -lavcodec -lavutil -lrt -lpthread
 
-SRCS = video_player.c media_proc.c avpl_thrd.c avpl_sem.c avpl_ui.c
+SRCS = video_player.c media_proc.c avpl_thrd.c avpl_sem.c avpl_ui.c avpl_flags.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -23,19 +23,8 @@ pthread_t vid_thread;
 // Flags
 flags_t flags;
 
-void handle_sigwinch(int sig) {
+void handle_winch(int sig) {
     flags.winch_flag = 1;
-}   
-
-void init_sig() {
-    // Initialize sigaction structures for SIGWINCH 
-    struct sigaction sa_winch;
-    sa_winch.sa_handler = handle_sigwinch;
-    sa_winch.sa_flags = 0;
-    sigemptyset(&sa_winch.sa_mask);
-
-    // Set up signal handlers for SIGWINCH
-    sigaction(SIGWINCH, &sa_winch, NULL);
 }
 
 // Function for processing arguments in cmd_win
@@ -127,6 +116,7 @@ int main() {
         else {
             // Resize ui
             wclear(wins->cmd_win);
+            wrefresh(wins->cmd_win);
     
             // Destroy and reinitialize UI
             destroy_ui(wins);
