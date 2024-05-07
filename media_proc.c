@@ -11,16 +11,12 @@
 #include "media_proc.h"
 #include "ascii_conv.h"
 
-#define ASCII_CHARS " .,:;i1tfLCG08@"
-
-// Function that displays error messages to window
 void display_error(WINDOW *win, const char *msg) {
     werase(win);
     mvwprintw(win, 0, 0, "Error: %s", msg); 
     wrefresh(win);
 }
 
-// Function that separates video into frames
 void play_video(char *vid_title, WINDOW *main_win) {
     avformat_network_init();    // Init network components
 
@@ -38,13 +34,13 @@ void play_video(char *vid_title, WINDOW *main_win) {
     // Open video file
     AVFormatContext *format_ctx = NULL;
     if (avformat_open_input(&format_ctx, vid_title, NULL, NULL) != 0) {
-        display_error(stdscr, "Could not open video file");
+        display_error(main_win, "Could not open video file");
         return;
     }
 
     // Find video stream information
     if (avformat_find_stream_info(format_ctx, NULL) < 0) {
-        display_error(stdscr, "Could not find stream information");
+        display_error(main_win, "Could not find stream information");
         avformat_close_input(&format_ctx);
         return;
     }
@@ -52,7 +48,7 @@ void play_video(char *vid_title, WINDOW *main_win) {
     // Find video stream
     video_stream_index = av_find_best_stream(format_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &codec, 0);
     if (video_stream_index < 0) {
-        display_error(stdscr, "Could not find video stream");
+        display_error(main_win, "Could not find video stream");
         avformat_close_input(&format_ctx);
         return;
     }
@@ -64,7 +60,7 @@ void play_video(char *vid_title, WINDOW *main_win) {
 
     // Open codec
     if (avcodec_open2(codec_ctx, codec, NULL) < 0) {
-        display_error(stdscr, "Could not open codec");
+        display_error(main_win, "Could not open codec");
         avcodec_free_context(&codec_ctx);
         avformat_close_input(&format_ctx);
         return;
@@ -73,7 +69,7 @@ void play_video(char *vid_title, WINDOW *main_win) {
     // Allocate memory for frame
     frame = av_frame_alloc();
     if (!frame) {
-        display_error(stdscr, "Failed to allocate frame");
+        display_error(main_win, "Failed to allocate frame");
         avcodec_free_context(&codec_ctx);
         avformat_close_input(&format_ctx);
         return;

@@ -10,7 +10,7 @@
 
 /* Function: play_video
  * --------------------
- * 
+ * Separates video into frames and passes them to ascii_conv function
  * 
  * Parameters
  * ----------
