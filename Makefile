@@ -30,7 +30,7 @@ OBJS = $(SRCS:.c=.o)
 
 TARGETS = video_player
 
-.PHONY: all run clean
+.PHONY: all run clean git_upload
 
 all: $(TARGETS)
 
