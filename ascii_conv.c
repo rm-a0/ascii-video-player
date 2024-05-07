@@ -1,20 +1,22 @@
-/* ascii_conv.h
+/* ascii_conv.c
  * ----------------------
  * Author:  Michal Repcik
  * Date:    07.04.2024
 */
 #include "ascii_conv.h"
 
-#define ASCII_CHARS " .,:;i1tfLCG08@"
+#define ASCII_CHARS     " .,:;i1tfLCG08@"
+#define PIXEL_WIDTH     3
+#define PIXEL_HEIGHT    2
 
 void frame_to_ascii(WINDOW *win, AVFrame *frame, int w_height, int w_width) {
     // Get frame dimensions
     int f_width = frame->width;
     int f_height = frame->height;
     
-    // Calculate how many pixels should chars cover
-    int char_width = f_width/w_width/3; // Char width is usually 3 px
-    int char_height = char_width*2;     // Char height is double its width
+    // Calculate how many pixels should character cover
+    int char_width = f_width/w_width/PIXEL_WIDTH; // Char width is usually 3 px
+    int char_height = char_width*PIXEL_HEIGHT;     // Char height is double its width
 
     // Draw ASCII art based on pixel luminance
     for (int y = 0; y < f_height; y += char_height) {
