@@ -12,6 +12,7 @@ Memory leaks after exiting program (fixed in main)
 # TODO
 Implement Pause button (DONE) \
 Implement dynamic resizing when video is playing (ALMOST DONE) \
+Implement help function (commands showcase) \
 Add additional commands (video quality, speed, help function...)
 
 # How to use (will be updated)
