@@ -19,13 +19,16 @@
 
 // Threads
 pthread_t vid_thread;
-// Flags
-flags_t flags;
+
+// Initialize globally
+flags_t *flags = NULL;
+sems_t *sems = NULL;
+
 // TEMPORARY
 int playing = 1;
 
 void handle_winch() {
-    flags.winch_flag = 1;
+    flags->winch_flag = 1;
 }
 
 // Function for processing arguments in cmd_win
@@ -49,9 +52,6 @@ int process_cmd(const char* cmd, wins_t* wins, sems_t *sems) {
 
                 // Allocate memory for threads
                 // DO NOT PLAY TWICE ==> SEGFAULT
-                // Fix in the future
-                // move malloc somewhere else
-                // create function for struct malloc
                 thrd_args_t *thrd_args = init_thrd_args(wins->main_win, vid_filename, sems);
 
                 // Start video playback in a new thread
@@ -69,6 +69,7 @@ int process_cmd(const char* cmd, wins_t* wins, sems_t *sems) {
                 }
             }
             break;
+        // RESUME
         case 'r':
             if (strcmp(cmd, "resume") == 0) {
                 if (playing == 0) {
@@ -91,18 +92,12 @@ int main() {
     keypad(stdscr, TRUE);   // Enable keypad for function and arrow keys
     curs_set(0);            // Hide cursor
 
-    // Init semaphores
-    sems_t *sems = init_sems();
-
+    sems = init_sems();     // Init semaphores
+    flags = init_flags();   // Init flags
     init_sig();             // Init signals
     
     // Init windows
     wins_t* wins = init_ui(CMD_WIN_HEIGHT);
-    if (wins == NULL) {
-        fprintf(stderr, "Failed to allocate memory for wins_t struct\n");
-        endwin();
-        return 1;
-    }
 
     // Display '>' in cmd_win
     mvwprintw(wins->cmd_win, 1, 1, "> ");
@@ -111,7 +106,7 @@ int main() {
     // Loop for processing commands
     char cmd[256];
     while (1) {
-        if (flags.winch_flag != 1) {
+        if (flags->winch_flag != 1) {
             // Get user input
             wgetstr(wins->cmd_win, cmd);
             wclear(wins->cmd_win);                   
@@ -137,12 +132,13 @@ int main() {
             wins = init_ui(CMD_WIN_HEIGHT);
 
             // Reset winch_flag
-            flags.winch_flag = 0;
+            flags->winch_flag = 0;
         }
     }
 
     // Clean up and exit
     destroy_sems(sems);
+    destroy_flags(flags);
     destroy_ui(wins);
     endwin();
     return 0;

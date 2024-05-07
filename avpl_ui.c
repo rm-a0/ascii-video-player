@@ -13,6 +13,7 @@ wins_t* init_ui(int cmd_win_height) {
     if (wins == NULL) {
         return NULL;
     }
+    
     // Calculate window dimensions
     int main_win_height = LINES - cmd_win_height;
     int main_win_width = COLS;

@@ -26,4 +26,7 @@ void destroy_sems(sems_t *sems) {
     // Destroy semaphores
     sem_destroy(&(sems->mutex));
     sem_destroy(&(sems->video));
+
+    // Free allocated memory
+    free(sems);
 }

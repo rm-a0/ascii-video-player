@@ -5,7 +5,29 @@
 */
 #define _POSIX_C_SOURCE 199309L     // Sigaction
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
 #include "avpl_flags.h"
+
+flags_t* init_flags() {
+    // Alocate memory for flags struct
+    flags_t *flags = malloc(sizeof(flags_t));
+    if (flags == NULL) {
+        return NULL;
+    }
+
+    // Initialize all flags
+    flags->vid_thrd_active = false;
+    flags->vid_playing = false;
+
+    return flags;
+}
+
+void destroy_flags(flags_t *flags) {
+    // Free allocated memory
+    free(flags);
+}
 
 void init_sig() {
     // Initialize sigaction structures for SIGWINCH 
