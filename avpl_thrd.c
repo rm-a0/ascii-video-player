@@ -1,7 +1,7 @@
 /* avpl_thrd.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    06.03.2024
+ * Date:    06.04.2024
 */
 #include <stdio.h>
 #include <ncurses.h>
@@ -15,13 +15,14 @@ void *video_thread(void *args) {
     thrd_args_t *thrd_args = (thrd_args_t*)args;
     char* filename = thrd_args->filename;
     WINDOW *win = thrd_args->win;
+    sems_t *sems = thrd_args->sems;
 
     // Call play video function
-    play_video(filename, win);
+    play_video(filename, win, sems);
     return NULL;
 }
 
-thrd_args_t* init_thrd_args(WINDOW* win, char* filename) {
+thrd_args_t* init_thrd_args(WINDOW* win, char* filename, sems_t *sems) {
     // Allocate memory for the struct
     thrd_args_t *thrd_args = malloc(sizeof(thrd_args_t));
     // Check memory allocation
@@ -31,6 +32,7 @@ thrd_args_t* init_thrd_args(WINDOW* win, char* filename) {
     // Initialize varaibles within the struct
     thrd_args->filename = filename;
     thrd_args->win = win;
+    thrd_args->sems = sems;
 
     return thrd_args;
 }

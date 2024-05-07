@@ -21,13 +21,15 @@
 pthread_t vid_thread;
 // Flags
 flags_t flags;
+// TEMPORARY
+int playing = 1;
 
 void handle_winch() {
     flags.winch_flag = 1;
 }
 
 // Function for processing arguments in cmd_win
-int process_cmd(const char* cmd, wins_t* wins) {
+int process_cmd(const char* cmd, wins_t* wins, sems_t *sems) {
     switch (cmd[0]) {
         // EXIT and QUIT
         case 'e':
@@ -50,7 +52,7 @@ int process_cmd(const char* cmd, wins_t* wins) {
                 // Fix in the future
                 // move malloc somewhere else
                 // create function for struct malloc
-                thrd_args_t *thrd_args = init_thrd_args(wins->main_win, vid_filename);
+                thrd_args_t *thrd_args = init_thrd_args(wins->main_win, vid_filename, sems);
 
                 // Start video playback in a new thread
                 if (pthread_create(&vid_thread, NULL, video_thread, (void *)thrd_args) != 0) {
@@ -61,7 +63,18 @@ int process_cmd(const char* cmd, wins_t* wins) {
         // STOP
         case 's':
             if (strcmp(cmd, "stop") == 0) {
-                
+                if (playing == 1) {
+                    playing = 0;
+                    sem_wait(&(sems->video));
+                }
+            }
+            break;
+        case 'r':
+            if (strcmp(cmd, "resume") == 0) {
+                if (playing == 0) {
+                    playing = 1;
+                    sem_post(&(sems->video));
+                }
             }
             break;
         default:
@@ -78,8 +91,8 @@ int main() {
     keypad(stdscr, TRUE);   // Enable keypad for function and arrow keys
     curs_set(0);            // Hide cursor
 
-    sems_t sems;            // Init sems struct
-    init_sems(&sems);       // Init semaphores
+    // Init semaphores
+    sems_t *sems = init_sems();
 
     init_sig();             // Init signals
     
@@ -108,7 +121,7 @@ int main() {
             wrefresh(wins->cmd_win);
 
             // Process commands
-            if ((process_cmd(cmd, wins)) == 1) {
+            if ((process_cmd(cmd, wins, sems)) == 1) {
                 break;
             } 
         }
@@ -129,7 +142,7 @@ int main() {
     }
 
     // Clean up and exit
-    destroy_sems(&sems);
+    destroy_sems(sems);
     destroy_ui(wins);
     endwin();
     return 0;

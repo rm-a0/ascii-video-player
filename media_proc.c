@@ -10,6 +10,7 @@
 
 #include "media_proc.h"
 #include "ascii_conv.h"
+#include "avpl_sem.h"
 
 void display_error(WINDOW *win, const char *msg) {
     werase(win);
@@ -17,7 +18,7 @@ void display_error(WINDOW *win, const char *msg) {
     wrefresh(win);
 }
 
-void play_video(char *vid_title, WINDOW *main_win) {
+void play_video(char *vid_title, WINDOW *main_win, sems_t *sems) {
     avformat_network_init();    // Init network components
 
     // Initialize necessary components
@@ -95,10 +96,14 @@ void play_video(char *vid_title, WINDOW *main_win) {
                     break;
                 }
                 
+                // Semaphore for pausing the video
+                sem_wait(&(sems->video));
                 // Display decoded frame
                 frame_to_ascii(main_win, frame, getmaxx(main_win), getmaxy(main_win));
                 usleep(50000);
                 wrefresh(main_win);
+                // Unlock semaphore
+                sem_post(&(sems->video));
             }
         }
         av_packet_unref(&packet);

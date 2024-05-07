@@ -1,7 +1,7 @@
 /* avpl_thrd.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    06.03.2024
+ * Date:    06.04.2024
 */
 #ifndef AVPL_THRD_H__
 #define AVPL_THRD_H__
@@ -25,7 +25,7 @@
 typedef struct thrd_args {
     char *filename;
     WINDOW *win;
-    // sems_t sems;
+    sems_t* sems;
 } thrd_args_t;
 
 /* Function: video_thread
@@ -56,6 +56,6 @@ void *video_thread(void *args);
  * ------------
  * pointer to a thrd_args_t struct
 */
-thrd_args_t* init_thrd_args(WINDOW* win, char* filename);
+thrd_args_t* init_thrd_args(WINDOW* win, char *filename, sems_t *sems);
 
 #endif // AVPL_THRD_H__

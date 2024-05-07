@@ -8,6 +8,8 @@
 
 #include <ncurses.h>    // Lib for terminal operations
 
+#include "avpl_sem.h"
+
 /* Function: play_video
  * --------------------
  * Separates video into frames and passes them to ascii_conv function
@@ -16,12 +18,13 @@
  * ----------
  * vid_title - path to the video that should be played
  * main_win - window where video should be displayed
+ * sems - struct containing semaphores
  * 
  * Return value
  * ------------
  * void
 */
-void play_video(char *vid_title, WINDOW *main_win);
+void play_video(char *vid_title, WINDOW *main_win, sems_t *sems);
 
 /* Function: display_error
  * -----------------------

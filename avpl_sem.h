@@ -1,7 +1,7 @@
 /* avpl_sem.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    05.03.2024
+ * Date:    05.04.2024
 */
 #ifndef AVPL_SEM_H__
 #define AVPL_SEM_H__
@@ -19,6 +19,7 @@
 */
 typedef struct sems {
     sem_t mutex;
+    sem_t video;
 } sems_t;
 
 /* Function: init_sems
@@ -27,13 +28,13 @@ typedef struct sems {
  * 
  * Parameters
  * ----------
- * sems - pointer to struct holding semaphores
+ * none
  * 
  * Return value
  * ------------
- * void
+ * pointer to a struct holding semaphores
 */
-void init_sems(sems_t *sems);
+sems_t* init_sems();
 
 /* Function: destroy_sems
  * ----------------------
