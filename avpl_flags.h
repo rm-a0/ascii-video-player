@@ -48,6 +48,6 @@ void init_sig();
  * ------------
  * void
 */
-void handle_winch(int sig);
+void handle_winch();
 
 #endif // AVPL_FLAGS_H__

@@ -22,7 +22,7 @@ pthread_t vid_thread;
 // Flags
 flags_t flags;
 
-void handle_winch(int sig) {
+void handle_winch() {
     flags.winch_flag = 1;
 }
 
