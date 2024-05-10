@@ -1,7 +1,7 @@
 /* media_proc.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    06.04.2024
+ * Date:    10.05.2024
 */
 #define _XOPEN_SOURCE 500           // Solves usleep compilation issues
 #include <stdio.h>
@@ -18,7 +18,7 @@ void display_error(WINDOW *win, const char *msg) {
     wrefresh(win);
 }
 
-void play_video(char *vid_title, WINDOW *main_win, sems_t *sems) {
+int play_media(char *vid_title, WINDOW *main_win, sems_t *sems) {
     avformat_network_init();    // Init network components
 
     // Initialize necessary components
@@ -29,21 +29,21 @@ void play_video(char *vid_title, WINDOW *main_win, sems_t *sems) {
 
     if (main_win == NULL) {
         fprintf(stderr, "Null pointer to main win");
-        exit(EXIT_FAILURE);
+        return 1;
     }
 
     // Open video file
     AVFormatContext *format_ctx = NULL;
     if (avformat_open_input(&format_ctx, vid_title, NULL, NULL) != 0) {
         display_error(main_win, "Could not open video file");
-        return;
+        return 1;
     }
 
     // Find video stream information
     if (avformat_find_stream_info(format_ctx, NULL) < 0) {
         display_error(main_win, "Could not find stream information");
         avformat_close_input(&format_ctx);
-        return;
+        return 1;
     }
 
     // Find video stream
@@ -51,7 +51,7 @@ void play_video(char *vid_title, WINDOW *main_win, sems_t *sems) {
     if (video_stream_index < 0) {
         display_error(main_win, "Could not find video stream");
         avformat_close_input(&format_ctx);
-        return;
+        return 1;
     }
 
     // Initialize codec context
@@ -64,7 +64,7 @@ void play_video(char *vid_title, WINDOW *main_win, sems_t *sems) {
         display_error(main_win, "Could not open codec");
         avcodec_free_context(&codec_ctx);
         avformat_close_input(&format_ctx);
-        return;
+        return 1;
     }
 
     // Allocate memory for frame
@@ -73,7 +73,7 @@ void play_video(char *vid_title, WINDOW *main_win, sems_t *sems) {
         display_error(main_win, "Failed to allocate frame");
         avcodec_free_context(&codec_ctx);
         avformat_close_input(&format_ctx);
-        return;
+        return 1;
     }
 
     // Read frames from the video
@@ -113,4 +113,5 @@ void play_video(char *vid_title, WINDOW *main_win, sems_t *sems) {
     av_frame_free(&frame);
     avcodec_free_context(&codec_ctx);
     avformat_close_input(&format_ctx);
+    return 0;
 }

@@ -1,7 +1,7 @@
 /* avpl_thrd.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    06.04.2024
+ * Date:    10.05.2024
 */
 #ifndef AVPL_THRD_H__
 #define AVPL_THRD_H__
@@ -30,7 +30,7 @@ typedef struct thrd_args {
 
 /* Function: video_thread
  * ----------------------
- * This function is repsonsible for video playback in antoher thread
+ * This function is repsonsible for media playback in antoher thread
  * 
  * Parameters
  * ----------

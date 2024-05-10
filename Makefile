@@ -1,14 +1,12 @@
 # Makefile
 # ---------------------
 # Author: Michal Repcik
-# Date: 06.04.2024
+# Date: 10.05.2024
 
 #TODO
-#	Dynamically allocate sems_t struct
 #	Add semaphores for resizing FIX SEGFAULT
 #	Center video and adjust resizing (for heigh videos)
 #	Add signals for segfaults
-#	Add pause
 #	Reorganize code to headerfiles
 
 CC = gcc

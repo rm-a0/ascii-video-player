@@ -1,7 +1,7 @@
 /* media_proc.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    06.04.2024
+ * Date:    10.05.2024
 */
 #ifndef MEDIA_PROC_H__
 #define MEDIA_PROC_H__
@@ -10,7 +10,7 @@
 
 #include "avpl_sem.h"
 
-/* Function: play_video
+/* Function: play_media
  * --------------------
  * Separates video into frames and passes them to ascii_conv function
  * 
@@ -22,9 +22,9 @@
  * 
  * Return value
  * ------------
- * void
+ * int - indicates state in which the function ended
 */
-void play_video(char *vid_title, WINDOW *main_win, sems_t *sems);
+int play_media(char *vid_title, WINDOW *main_win, sems_t *sems);
 
 /* Function: display_error
  * -----------------------

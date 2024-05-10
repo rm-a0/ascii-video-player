@@ -1,7 +1,7 @@
 /* avpl_thrd.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    06.04.2024
+ * Date:    10.05.2024
 */
 #include <stdio.h>
 #include <ncurses.h>
@@ -17,8 +17,10 @@ void *video_thread(void *args) {
     WINDOW *win = thrd_args->win;
     sems_t *sems = thrd_args->sems;
 
-    // Call play video function
-    play_video(filename, win, sems);
+    // Call play media function
+    if (play_media(filename, win, sems) != 0) {
+        fprintf(stderr, "Something went wrong with video playback");
+    }
     return NULL;
 }
 

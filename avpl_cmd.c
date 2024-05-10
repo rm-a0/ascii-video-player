@@ -1,9 +1,12 @@
+/* avpl_cmd.c
+ * ----------------------
+ * Author:  Michal Repcik
+ * Date:    10.05.2024
+*/
 #include <stdio.h>
 #include <stdbool.h>
 
 #include "avpl_cmd.h"
-#include "avpl_sem.h"
-#include "avpl_flags.h"
 
 void pause_vid(sems_t *sems, flags_t *flags) {
     if (flags->vid_playing == true) {
