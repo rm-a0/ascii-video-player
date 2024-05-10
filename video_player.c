@@ -23,33 +23,37 @@ pthread_t vid_thread;
 // Initialize globally
 flags_t *flags = NULL;
 sems_t *sems = NULL;
-
-// TEMPORARY
-int playing = 1;
+wins_t* wins = NULL;
 
 void handle_winch() {
     flags->winch_flag = 1;
 }
 
 // Function for processing arguments in cmd_win
-int process_cmd(const char* cmd, wins_t* wins, sems_t *sems) {
+int process_cmd(const char* cmd) {
     switch (cmd[0]) {
-        // EXIT and QUIT
         case 'e':
+        // EXIT
             if (strcmp(cmd, "exit") == 0) {
                 return 1;
             }
             break;
         case 'q':
+        // QUIT
             if (strcmp(cmd, "quit") == 0) {
                 return 1;
             }
             break;
-        // PLAY
         case 'p':
+        // PLAY
             if (strcmp(cmd, "play") == 0) {
                 char *vid_filename = "fate.mp4";
 
+                if (flags->vid_thrd_active == true) {
+                    mvwprintw(wins->cmd_win, 1, 1, "> Video is already playing");
+                    wrefresh(wins->cmd_win);
+                    break;
+                }
                 // Allocate memory for threads
                 // DO NOT PLAY TWICE ==> SEGFAULT
                 thrd_args_t *thrd_args = init_thrd_args(wins->main_win, vid_filename, sems);
@@ -58,22 +62,32 @@ int process_cmd(const char* cmd, wins_t* wins, sems_t *sems) {
                 if (pthread_create(&vid_thread, NULL, video_thread, (void *)thrd_args) != 0) {
                     fprintf(stderr, "Error: Failed to start video playback thread\n");
                 }
+
+                flags->vid_playing = true;
+                flags->vid_thrd_active = true;
             }
-            break;
-        // STOP
-        case 's':
-            if (strcmp(cmd, "stop") == 0) {
-                if (playing == 1) {
-                    playing = 0;
+        // PAUSE
+            else if (strcmp(cmd, "pause") == 0) {
+                if (flags->vid_playing == true) {
+                    flags->vid_playing = false;
                     sem_wait(&(sems->video));
                 }
             }
             break;
-        // RESUME
+        case 's':
+        // STOP
+            if (strcmp(cmd, "stop") == 0) {
+                if (flags->vid_playing == true) {
+                    flags->vid_playing = false;
+                    sem_wait(&(sems->video));
+                }
+            }
+            break;
         case 'r':
+        // RESUME
             if (strcmp(cmd, "resume") == 0) {
-                if (playing == 0) {
-                    playing = 1;
+                if (flags->vid_playing == false) {
+                    flags->vid_playing = true;
                     sem_post(&(sems->video));
                 }
             }
@@ -87,17 +101,18 @@ int process_cmd(const char* cmd, wins_t* wins, sems_t *sems) {
 
 // Main function
 int main() {
+    /*      Ncurses settings      */
+    /******************************/
     initscr();              // Initialize the screen
     cbreak();               // Disable line buffering
     keypad(stdscr, TRUE);   // Enable keypad for function and arrow keys
     curs_set(0);            // Hide cursor
+    /******************************/
 
-    sems = init_sems();     // Init semaphores
-    flags = init_flags();   // Init flags
-    init_sig();             // Init signals
-    
-    // Init windows
-    wins_t* wins = init_ui(CMD_WIN_HEIGHT);
+    init_sig();                     // Init signals
+    sems = init_sems();             // Init semaphores
+    flags = init_flags();           // Init flags
+    wins = init_ui(CMD_WIN_HEIGHT); // Init windows
 
     // Display '>' in cmd_win
     mvwprintw(wins->cmd_win, 1, 1, "> ");
@@ -116,7 +131,7 @@ int main() {
             wrefresh(wins->cmd_win);
 
             // Process commands
-            if ((process_cmd(cmd, wins, sems)) == 1) {
+            if ((process_cmd(cmd)) == 1) {
                 break;
             } 
         }
@@ -128,6 +143,7 @@ int main() {
             // Destroy and reinitialize UI
             destroy_ui(wins);
             endwin();
+            refresh();      // Important for getting dimenstions
             initscr();
             wins = init_ui(CMD_WIN_HEIGHT);
 
