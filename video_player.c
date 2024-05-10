@@ -34,17 +34,24 @@ void handle_winch() {
 int process_cmd(const char* cmd) {
     switch (cmd[0]) {
         case 'e':
-        // EXIT
-            if (strcmp(cmd, "exit") == 0) {
-                return 1;
-            }
-            break;
         case 'q':
-        // QUIT
-            if (strcmp(cmd, "quit") == 0) {
+        // QUIT AND EXIT
+            if (strcmp(cmd, "quit") == 0 || strcmp(cmd, "exit") == 0) {
                 return 1;
             }
+        // END
+            else if (strcmp(cmd, "end") == 0) {
+                mvwprintw(wins->cmd_win, 1, 1, "> TODO");
+                wrefresh(wins->cmd_win);
+            }
             break;
+        case 'r':
+        // RESUME
+            if (strcmp(cmd, "resume") == 0) {
+                resume_vid(sems, flags);
+            }
+            break;
+        case 's':
         case 'p':
         // PLAY
             if (strcmp(cmd, "play") == 0) {
@@ -67,21 +74,9 @@ int process_cmd(const char* cmd) {
                 flags->vid_playing = true;
                 flags->vid_thrd_active = true;
             }
-        // PAUSE
-            else if (strcmp(cmd, "pause") == 0) {
+        // PAUSE AND STOP
+            else if (strcmp(cmd, "pause") == 0 || strcmp(cmd, "stop") == 0) {
                 pause_vid(sems, flags);
-            }
-            break;
-        case 's':
-        // STOP
-            if (strcmp(cmd, "stop") == 0) {
-                pause_vid(sems, flags);
-            }
-            break;
-        case 'r':
-        // RESUME
-            if (strcmp(cmd, "resume") == 0) {
-                resume_vid(sems, flags);
             }
             break;
         default:
