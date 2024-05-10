@@ -24,7 +24,8 @@ SRCS = 				\
     avpl_sem.c 		\
     avpl_ui.c 		\
     avpl_flags.c 	\
-    ascii_conv.c
+    ascii_conv.c    \
+    avpl_cmd.c
 
 OBJS = $(SRCS:.c=.o)
 

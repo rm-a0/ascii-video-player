@@ -1,7 +1,7 @@
 /* video_player.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    06.04.2024
+ * Date:    10.05.2024
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +12,7 @@
 #include "avpl_thrd.h"              // Lib for threads
 #include "avpl_flags.h"             // Lib for flags
 #include "avpl_ui.h"                // Lib for user interface
+#include "avpl_cmd.h"               // Lib for commands
 #include "media_proc.h"             // Lib for media processing
 
 // Constants
@@ -68,28 +69,19 @@ int process_cmd(const char* cmd) {
             }
         // PAUSE
             else if (strcmp(cmd, "pause") == 0) {
-                if (flags->vid_playing == true) {
-                    flags->vid_playing = false;
-                    sem_wait(&(sems->video));
-                }
+                pause_vid(sems, flags);
             }
             break;
         case 's':
         // STOP
             if (strcmp(cmd, "stop") == 0) {
-                if (flags->vid_playing == true) {
-                    flags->vid_playing = false;
-                    sem_wait(&(sems->video));
-                }
+                pause_vid(sems, flags);
             }
             break;
         case 'r':
         // RESUME
             if (strcmp(cmd, "resume") == 0) {
-                if (flags->vid_playing == false) {
-                    flags->vid_playing = true;
-                    sem_post(&(sems->video));
-                }
+                resume_vid(sems, flags);
             }
             break;
         default:
@@ -116,7 +108,7 @@ int main() {
 
     // Display '>' in cmd_win
     mvwprintw(wins->cmd_win, 1, 1, "> ");
-    wrefresh(wins->cmd_win);                  
+    wrefresh(wins->cmd_win);
 
     // Loop for processing commands
     char cmd[256];
