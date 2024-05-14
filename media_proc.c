@@ -18,7 +18,7 @@ void display_error(WINDOW *win, const char *msg) {
     wrefresh(win);
 }
 
-int play_media(char *vid_title, WINDOW *main_win, sems_t *sems) {
+int play_media(char *vid_title, wins_t *wins, sems_t *sems) {
     avformat_network_init();    // Init network components
 
     // Initialize necessary components
@@ -27,7 +27,7 @@ int play_media(char *vid_title, WINDOW *main_win, sems_t *sems) {
     AVFrame *frame = NULL;
     int video_stream_index;
 
-    if (main_win == NULL) {
+    if (wins->main_win == NULL) {
         fprintf(stderr, "Null pointer to main win");
         return 1;
     }
@@ -35,13 +35,13 @@ int play_media(char *vid_title, WINDOW *main_win, sems_t *sems) {
     // Open video file
     AVFormatContext *format_ctx = NULL;
     if (avformat_open_input(&format_ctx, vid_title, NULL, NULL) != 0) {
-        display_error(main_win, "Could not open video file");
+        display_error(wins->main_win, "Could not open video file");
         return 1;
     }
 
     // Find video stream information
     if (avformat_find_stream_info(format_ctx, NULL) < 0) {
-        display_error(main_win, "Could not find stream information");
+        display_error(wins->main_win, "Could not find stream information");
         avformat_close_input(&format_ctx);
         return 1;
     }
@@ -49,7 +49,7 @@ int play_media(char *vid_title, WINDOW *main_win, sems_t *sems) {
     // Find video stream
     video_stream_index = av_find_best_stream(format_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &codec, 0);
     if (video_stream_index < 0) {
-        display_error(main_win, "Could not find video stream");
+        display_error(wins->main_win, "Could not find video stream");
         avformat_close_input(&format_ctx);
         return 1;
     }
@@ -61,7 +61,7 @@ int play_media(char *vid_title, WINDOW *main_win, sems_t *sems) {
 
     // Open codec
     if (avcodec_open2(codec_ctx, codec, NULL) < 0) {
-        display_error(main_win, "Could not open codec");
+        display_error(wins->main_win, "Could not open codec");
         avcodec_free_context(&codec_ctx);
         avformat_close_input(&format_ctx);
         return 1;
@@ -70,7 +70,7 @@ int play_media(char *vid_title, WINDOW *main_win, sems_t *sems) {
     // Allocate memory for frame
     frame = av_frame_alloc();
     if (!frame) {
-        display_error(main_win, "Failed to allocate frame");
+        display_error(wins->main_win, "Failed to allocate frame");
         avcodec_free_context(&codec_ctx);
         avformat_close_input(&format_ctx);
         return 1;
@@ -82,7 +82,7 @@ int play_media(char *vid_title, WINDOW *main_win, sems_t *sems) {
             // Decode the video packet
             int ret = avcodec_send_packet(codec_ctx, &packet);
             if (ret < 0) {
-                display_error(main_win, "Failed to decode video packet");
+                display_error(wins->main_win, "Failed to decode video packet");
                 break;
             }
 
@@ -92,16 +92,16 @@ int play_media(char *vid_title, WINDOW *main_win, sems_t *sems) {
                 if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
                     break;
                 else if (ret < 0) {
-                    display_error(main_win, "Failed to retrieve frame from codec");
+                    display_error(wins->main_win, "Failed to retrieve frame from codec");
                     break;
                 }
                 
                 // Semaphore for pausing the video
                 sem_wait(&(sems->video));
                 // Display decoded frame
-                frame_to_ascii(main_win, frame, getmaxx(main_win), getmaxy(main_win));
+                frame_to_ascii(wins->main_win, frame, getmaxx(wins->main_win), getmaxy(wins->main_win));
                 usleep(50000);
-                wrefresh(main_win);
+                wrefresh(wins->main_win);
                 // Unlock semaphore
                 sem_post(&(sems->video));
             }

@@ -53,4 +53,20 @@ wins_t* init_ui(int cmd_win_height);
 */
 void destroy_ui(wins_t *wins);
 
+/* Function: resize_ui
+ * -------------------
+ * Destroys previously created windows inside wins_t struct
+ * Reinitialize new windows with updated terminal size
+ * 
+ * Parameters
+ * ----------
+ * wins - pointer to a wins_t struct
+ * cmd_win_height - height of a command window
+ * 
+ * Return value
+ * ------------
+ * state in which function ended
+*/
+int resize_ui(wins_t *wins, int cmd_win_height);
+
 #endif // AVPL_UI_H__

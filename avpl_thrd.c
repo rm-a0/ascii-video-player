@@ -14,17 +14,17 @@ void *video_thread(void *args) {
     // Unpack arguments
     thrd_args_t *thrd_args = (thrd_args_t*)args;
     char* filename = thrd_args->filename;
-    WINDOW *win = thrd_args->win;
+    wins_t *wins = thrd_args->wins;
     sems_t *sems = thrd_args->sems;
 
     // Call play media function
-    if (play_media(filename, win, sems) != 0) {
+    if (play_media(filename, wins, sems) != 0) {
         fprintf(stderr, "Something went wrong with video playback");
     }
     return NULL;
 }
 
-thrd_args_t* init_thrd_args(WINDOW* win, char* filename, sems_t *sems) {
+thrd_args_t* init_thrd_args(wins_t* wins, char* filename, sems_t *sems) {
     // Allocate memory for the struct
     thrd_args_t *thrd_args = malloc(sizeof(thrd_args_t));
     // Check memory allocation
@@ -33,7 +33,7 @@ thrd_args_t* init_thrd_args(WINDOW* win, char* filename, sems_t *sems) {
     }
     // Initialize varaibles within the struct
     thrd_args->filename = filename;
-    thrd_args->win = win;
+    thrd_args->wins = wins;
     thrd_args->sems = sems;
 
     return thrd_args;

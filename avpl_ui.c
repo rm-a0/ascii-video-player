@@ -22,7 +22,6 @@ wins_t* init_ui(int cmd_win_height) {
     wins->main_win = newwin(main_win_height, main_win_width, 0, 0);
     if (wins->main_win == NULL) {
         free(wins);
-        endwin();
         return NULL;
     }
 
@@ -31,7 +30,6 @@ wins_t* init_ui(int cmd_win_height) {
     if (wins->cmd_win == NULL) {
         delwin(wins->main_win);
         free(wins);
-        endwin();
         return NULL;
     }
 
@@ -46,4 +44,36 @@ void destroy_ui(wins_t *wins) {
         // Free allocated memory for wins_t struct
         free(wins);
     }
+}
+
+int resize_ui(wins_t *wins, int cmd_win_height) {
+    // Destroy existing windows
+    delwin(wins->main_win);
+    delwin(wins->cmd_win);
+
+    // End refresh and reinitialize ncurses
+    endwin();
+    refresh();
+    initscr();
+
+    // Reinitialize windows with updated size
+    int main_win_height = LINES - cmd_win_height;
+    int main_win_width = COLS;
+
+    // Recreate main window
+    wins->main_win = newwin(main_win_height, main_win_width, 0, 0);
+    if (wins->main_win == NULL) {
+        free(wins);
+        return 1;
+    }
+
+    // Recreate command window
+    wins->cmd_win = newwin(cmd_win_height, main_win_width, main_win_height, 0);
+    if (wins->cmd_win == NULL) {
+        delwin(wins->main_win);
+        free(wins);
+        return 1;
+    }
+
+    return 0;
 }

@@ -15,14 +15,14 @@
  * 
  * Parameters
  * ----------
- * flags - struct containing flags
  * sems - struct containing semaphores
+ * flags - struct containing flags
  * 
  * Return value
  * ------------
- * void
+ * if video was sucesfully paused, return 0
 */
-void pause_vid(sems_t *sems, flags_t *flags);
+int pause_vid(sems_t *sems, flags_t *flags);
 
 /* Function: resume_vid
  * --------------------
@@ -30,13 +30,13 @@ void pause_vid(sems_t *sems, flags_t *flags);
  * 
  * Parameters
  * ----------
- * flags - struct containing flags
  * sems - struct containing semaphores
+ * flags - struct containing flags
  * 
  * Return value
  * ------------
- * void
+ * if video was sucesfully resumed, return 0
 */
-void resume_vid(sems_t *sems, flags_t *flags);
+int resume_vid(sems_t *sems, flags_t *flags);
 
 #endif // AVPL_CMD_H__

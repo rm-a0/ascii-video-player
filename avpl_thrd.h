@@ -10,6 +10,7 @@
 #include <ncurses.h>
 
 #include "avpl_sem.h"
+#include "avpl_ui.h"
 
 /* Struct: thrd_args
  * -----------------
@@ -24,7 +25,7 @@
 */
 typedef struct thrd_args {
     char *filename;
-    WINDOW *win;
+    wins_t* wins;
     sems_t* sems;
 } thrd_args_t;
 
@@ -56,6 +57,6 @@ void *video_thread(void *args);
  * ------------
  * pointer to a thrd_args_t struct
 */
-thrd_args_t* init_thrd_args(WINDOW* win, char *filename, sems_t *sems);
+thrd_args_t* init_thrd_args(wins_t* wins, char *filename, sems_t *sems);
 
 #endif // AVPL_THRD_H__

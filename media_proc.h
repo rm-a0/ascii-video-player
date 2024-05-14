@@ -9,6 +9,7 @@
 #include <ncurses.h>    // Lib for terminal operations
 
 #include "avpl_sem.h"
+#include "avpl_ui.h"
 
 /* Function: play_media
  * --------------------
@@ -17,14 +18,14 @@
  * Parameters
  * ----------
  * vid_title - path to the video that should be played
- * main_win - window where video should be displayed
+ * wins - pointer to a struct containing windows
  * sems - struct containing semaphores
  * 
  * Return value
  * ------------
  * int - indicates state in which the function ended
 */
-int play_media(char *vid_title, WINDOW *main_win, sems_t *sems);
+int play_media(char *vid_title, wins_t* wins, sems_t *sems);
 
 /* Function: display_error
  * -----------------------

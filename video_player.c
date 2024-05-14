@@ -64,7 +64,7 @@ int process_cmd(const char* cmd) {
                 }
                 // Allocate memory for threads
                 // DO NOT PLAY TWICE ==> SEGFAULT
-                thrd_args_t *thrd_args = init_thrd_args(wins->main_win, vid_filename, sems);
+                thrd_args_t *thrd_args = init_thrd_args(wins, vid_filename, sems);
 
                 // Start video playback in a new thread
                 if (pthread_create(&vid_thread, NULL, video_thread, (void *)thrd_args) != 0) {
@@ -123,18 +123,16 @@ int main() {
             } 
         }
         else {
+            // Check if video is playing
+            int p_check = pause_vid(sems, flags);
+            
             // Resize ui
-            wclear(wins->cmd_win);
-            wrefresh(wins->cmd_win);
-    
-            // Destroy and reinitialize UI
-            destroy_ui(wins);
-            endwin();
-            refresh();      // Important for getting dimenstions
-            initscr();
-            wins = init_ui(CMD_WIN_HEIGHT);
-
-            // Reset winch_flag
+            resize_ui(wins, CMD_WIN_HEIGHT);
+            // Resume video if it was playing
+            if (p_check == 0) {
+                resume_vid(sems, flags);
+            }
+            // Reset flag for window change
             flags->winch_flag = 0;
         }
     }
