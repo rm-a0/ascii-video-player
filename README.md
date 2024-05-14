@@ -5,13 +5,13 @@ Video decoding is done using ffmpeg-dev libraries.
 
 # Bugs and Issues
 Resizing sometimes causes crash (FIXED) \
-Resizing doesnt work properly when video is playing \
+Resizing doesnt work properly when video is playing (FIXED) \
 Window is sometimes not resized properly (FIXED) \
-Memory leaks after exiting program (fixed in main)
+Memory leaks after exiting program (FIXED)
 
 # TODO
 Implement Pause button (DONE) \
-Implement dynamic resizing when video is playing (ALMOST DONE) \
+Implement dynamic resizing when video is playing (DONE) \
 Implement help function (commands showcase) \
 Add additional commands (video quality, speed, help function...)
 
