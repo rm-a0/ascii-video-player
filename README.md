@@ -18,18 +18,15 @@ Compile using __make__
 ```
 make
 ```
-If compilation fails make sure you have correct library and include paths specified in the Makefile.
-```makefile
-LDPATHS = -L/path/to/libraries
-INCPATHS = -I/path/to/include
-```
+> [!TIP]
+> If compilation fails make sure you have correct library and include paths specified in the Makefile.
+> ```makefile
+> LDPATHS = -L/path/to/libraries
+> INCPATHS = -I/path/to/include
+> ```
 Run using
 ```
 ./video_player
-```
-or
-```
-make run
 ```
 # Updates and Features
 - [x]  Dynamic window resizing
