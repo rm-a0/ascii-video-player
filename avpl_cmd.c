@@ -26,3 +26,19 @@ int resume_vid(sems_t *sems, flags_t *flags) {
     return 1;
 }
 
+void display_help(wins_t *wins) {
+    // Erase window
+    werase(wins->main_win);
+
+    // Display instructions
+    wprintw(wins->main_win, "HOW TO USE\n");
+    wprintw(wins->main_win, "List of all avaliable commands\n\n");
+    wprintw(wins->main_win, "   help                        - displays this info\n");
+    wprintw(wins->main_win, "   quit, exit                  - ends program\n");
+    wprintw(wins->main_win, "   play [/path/to/file]        - plays chosen media\n");
+    wprintw(wins->main_win, "   pause, stop                 - pauses the video\n");
+    wprintw(wins->main_win, "   resume                      - resumes the video\n");
+
+    // Refresh window
+    wrefresh(wins->main_win);
+}

@@ -8,6 +8,7 @@
 
 #include "avpl_sem.h"
 #include "avpl_flags.h"
+#include "avpl_ui.h"
 
 /* Function: pause_vid
  * --------------------
@@ -38,5 +39,19 @@ int pause_vid(sems_t *sems, flags_t *flags);
  * if video was sucesfully resumed, return 0
 */
 int resume_vid(sems_t *sems, flags_t *flags);
+
+/* Function: display_help
+ * ----------------------
+ * Displays instructions and informations about all avaliable commands
+ * 
+ * Parameters
+ * ----------
+ * wins - struct containing windows
+ * 
+ * Return value
+ * ------------
+ * void
+*/
+void display_help(wins_t *wins);
 
 #endif // AVPL_CMD_H__

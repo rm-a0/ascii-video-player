@@ -7,7 +7,6 @@
 #   Add quit video flag
 #   Add display help command
 #   Add end command
-#	Add semaphores for resizing FIX SEGFAULT
 #	Center video and adjust resizing (for heigh videos)
 #	Add signals for segfaults
 #	Reorganize code to headerfiles

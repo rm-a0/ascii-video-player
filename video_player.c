@@ -33,6 +33,13 @@ void handle_winch() {
 // Function for processing arguments in cmd_win
 int process_cmd(const char* cmd) {
     switch (cmd[0]) {
+        case 'h':
+        // HELP
+            if (strcmp(cmd, "help") == 0) {
+                pause_vid(sems, flags);
+                display_help(wins);
+            }
+            break;
         case 'e':
         case 'q':
         // QUIT AND EXIT
@@ -128,7 +135,7 @@ int main() {
 
             // Resize ui
             resize_ui(wins, CMD_WIN_HEIGHT);
-            
+
             // Resume video if it was playing
             if (p_check == 0) {
                 resume_vid(sems, flags);
