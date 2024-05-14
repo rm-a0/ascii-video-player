@@ -56,6 +56,7 @@ void destroy_ui(wins_t *wins);
 /* Function: resize_ui
  * -------------------
  * Destroys previously created windows inside wins_t struct
+ * Refres ncurses to get new window
  * Reinitialize new windows with updated terminal size
  * 
  * Parameters

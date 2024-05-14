@@ -98,10 +98,12 @@ int play_media(char *vid_title, wins_t *wins, sems_t *sems) {
                 
                 // Semaphore for pausing the video
                 sem_wait(&(sems->video));
+
                 // Display decoded frame
                 frame_to_ascii(wins->main_win, frame, getmaxx(wins->main_win), getmaxy(wins->main_win));
                 usleep(50000);
                 wrefresh(wins->main_win);
+                
                 // Unlock semaphore
                 sem_post(&(sems->video));
             }
