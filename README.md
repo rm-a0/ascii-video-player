@@ -5,17 +5,17 @@ Terminal layout is done using _ncurses_ library. \
 Video decoding is done using _ffmpeg-dev_ libraries.gi
 
 # Table of Contents
-- [Installation](#installation)
+- [Installation](#how-to-install-and-run)
     - [Linux](#linux)
     - [Windows](#windows)
     - [MacOS](#macos)
-- [Usage](#usage)
-- [Updates](#updates)
-- [Bugs](#bugs)
+- [Usage](#how-to-use)
+- [Updates](#updates-and-features)
+- [Bugs](#bugs-and-issues)
 - [License](#license)
 
-# How to Install and Run {#installation}
-### Linux: {#linux}
+# How to Install and Run
+### Linux:
 Download or clone this repository 
 ```
 git clone https://github.com/rm-a0/ASCII-Video-Player
@@ -39,17 +39,17 @@ Run using
 ```
 ./video_player
 ```
-### Windows: {#windows}
+### Windows:
 Currently not supported on Windows.
 Statically linked libraries and CMake will be added in the future.
-### MacOS: {#macos}
+### MacOS:
 Currently not supported on MacOS.
 CMake will be added in the future.
 
-# How to Use {#usage}
+# How to Use
 
 
-# Updates and Features {#updates}
+# Updates and Features
 - [x]  Dynamic window resizing
 - [x]  Help instructions
 - [x]  Pause and Resume commands
@@ -60,11 +60,11 @@ CMake will be added in the future.
 - [ ]  CMake and DLLs for MacOS and Windows support
 - [ ]  Semaphore tweaks for MacOS
 
-# Bugs and Issues {#bugs}
+# Bugs and Issues
 - [x]  Resizing causes crash when video is playing
 - [x]  Windows are not being resized properly
 - [x]  Major memory leaks after exiting program
 - [ ]  Resizing causes crash when font is too small (Ctrl -)
 - [ ]  Resizing causes crash when terminal is too small
 
-# License {#license}
+# License
