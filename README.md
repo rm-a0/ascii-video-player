@@ -4,6 +4,16 @@ __ASCII Media Player written in C.__
 Terminal layout is done using _ncurses_ library. \
 Video decoding is done using _ffmpeg-dev_ libraries.gi
 
+# Description
+
+After execution, terminal window will be split into 2 parts, command window and main window. 
++-------------------------+
+|                         |
+|                         |
++-------------------------+
+|                         |
++-------------------------+
+In command window you can write commands and on main window
 # Table of Contents
 - [Installation](#how-to-install-and-run)
     - [Linux](#linux)
@@ -47,7 +57,8 @@ Currently not supported on MacOS.
 CMake will be added in the future.
 
 # How to Use
-
+After you run the program type _help_ to display instructions
+### List of commands
 
 # Updates and Features
 - [x]  Dynamic window resizing
