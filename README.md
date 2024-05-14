@@ -29,18 +29,29 @@ Run using
 ./video_player
 ```
 # Updates and Features
-- [x]  Dynamic window resizing
-- [x]  Help instructions
-- [x]  Pause and Resume commands
-- [ ]  Enhanced user interface
-- [ ]  Video playback in color
-- [ ]  Video quality filter
-- [ ]  Video speed filter
-- [ ]  Dynamic linking for Windows
-- [ ]  Semaphore tweaks for MacOS
+<input type="checkbox" id="checkbox1" checked style="color: orange;">
+<label for="checkbox1">Dynamic window resizing</label><br>
 
-# Bugs and Issues
-- [x]  Resizing causes crash when video is playing
-- [x]  Windows are not being resized properly
-- [x]  Major memory leaks after exiting program
-- [ ]  Resizing causes crash when font or command window are too small
+<input type="checkbox" id="checkbox2" checked style="color: orange;">
+<label for="checkbox2">Help instructions</label><br>
+
+<input type="checkbox" id="checkbox3" checked style="color: orange;">
+<label for="checkbox3">Pause and Resume commands</label><br>
+
+<input type="checkbox" id="checkbox4" style="color: green;">
+<label for="checkbox4">Enhanced user interface</label><br>
+
+<input type="checkbox" id="checkbox5" style="color: green;">
+<label for="checkbox5">Video playback in color</label><br>
+
+<input type="checkbox" id="checkbox6" style="color: green;">
+<label for="checkbox6">Video quality filter</label><br>
+
+<input type="checkbox" id="checkbox7" style="color: green;">
+<label for="checkbox7">Video speed filter</label><br>
+
+<input type="checkbox" id="checkbox8" style="color: green;">
+<label for="checkbox8">Dynamic linking for Windows</label><br>
+
+<input type="checkbox" id="checkbox9" style="color: green;">
+<label for="checkbox9">Semaphore tweaks for MacOS</label><br>
