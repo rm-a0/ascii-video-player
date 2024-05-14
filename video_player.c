@@ -125,9 +125,10 @@ int main() {
         else {
             // Check if video is playing
             int p_check = pause_vid(sems, flags);
-            
+
             // Resize ui
             resize_ui(wins, CMD_WIN_HEIGHT);
+            
             // Resume video if it was playing
             if (p_check == 0) {
                 resume_vid(sems, flags);
