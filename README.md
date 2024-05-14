@@ -1,10 +1,21 @@
 # Overview
-__ASCII Media Player written in C.__ \
-\
-Terminal layout is done using _ncurses_ library. \
-Video decoding is done using _ffmpeg-dev_ libraries.
+__ASCII Media Player written in C.__
 
-# How to use
+Terminal layout is done using _ncurses_ library. \
+Video decoding is done using _ffmpeg-dev_ libraries.gi
+
+# Table of Contents
+- [Installation](#installation)
+    - [Linux](#linux)
+    - [Windows](#windows)
+    - [MacOS](#macos)
+- [Usage](#usage)
+- [Updates](#updates)
+- [Bugs](#bugs)
+- [License](#license)
+
+# How to Install and Run {#installation}
+### Linux: {#linux}
 Download or clone this repository 
 ```
 git clone https://github.com/rm-a0/ASCII-Video-Player
@@ -28,7 +39,17 @@ Run using
 ```
 ./video_player
 ```
-# Updates and Features
+### Windows: {#windows}
+Currently not supported on Windows.
+Statically linked libraries and CMake will be added in the future.
+### MacOS: {#macos}
+Currently not supported on MacOS.
+CMake will be added in the future.
+
+# How to Use {#usage}
+
+
+# Updates and Features {#updates}
 - [x]  Dynamic window resizing
 - [x]  Help instructions
 - [x]  Pause and Resume commands
@@ -36,11 +57,14 @@ Run using
 - [ ]  Video playback in color
 - [ ]  Video quality filter
 - [ ]  Video speed filter
-- [ ]  Dynamic linking for Windows
+- [ ]  CMake and DLLs for MacOS and Windows support
 - [ ]  Semaphore tweaks for MacOS
 
-# Bugs and Issues
+# Bugs and Issues {#bugs}
 - [x]  Resizing causes crash when video is playing
 - [x]  Windows are not being resized properly
 - [x]  Major memory leaks after exiting program
-- [ ]  Resizing causes crash when font or command window are too small
+- [ ]  Resizing causes crash when font is too small (Ctrl -)
+- [ ]  Resizing causes crash when terminal is too small
+
+# License {#license}
