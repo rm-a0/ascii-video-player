@@ -4,6 +4,7 @@ Terminal layout is done using ncurses library. \
 Video decoding is done using ffmpeg-dev libraries.
 
 # Bugs and Issues
+Resizing crashes when window or font is too small. \
 Resizing sometimes causes crash (FIXED) \
 Resizing doesnt work properly when video is playing (FIXED) \
 Window is sometimes not resized properly (FIXED) \
