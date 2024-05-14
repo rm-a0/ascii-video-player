@@ -3,18 +3,19 @@ ASCII Media Player written in C. \
 Terminal layout is done using ncurses library. \
 Video decoding is done using ffmpeg-dev libraries.
 
-# Bugs and Issues
-Resizing crashes when window or font is too small. \
-Resizing sometimes causes crash (FIXED) \
-Resizing doesnt work properly when video is playing (FIXED) \
-Window is sometimes not resized properly (FIXED) \
-Memory leaks after exiting program (FIXED)
+# Updates and Features
+- [x]  Dynamic window resizing
+- [x]  Help instructions
+- [x]  Pause and Resume commands
+- [ ]  Video playback in color
+- [ ]  Video quality filter
+- [ ]  Video speed filter
 
-# TODO
-Implement Pause button (DONE) \
-Implement dynamic resizing when video is playing (DONE) \
-Implement help function (commands showcase) \
-Add additional commands (video quality, speed, help function...)
+# Bugs and Issues
+- [x]  Resizing causes crash when video is playing
+- [x]  Windows are not being resized properly
+- [x]  Major memory leaks after exiting program
+- [ ]  Resizing causes crash when font or command window are too small
 
 # How to use (will be updated)
 Download this repository \
