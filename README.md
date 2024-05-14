@@ -2,19 +2,10 @@
 __ASCII Media Player written in C.__
 
 Terminal layout is done using _ncurses_ library. \
-Video decoding is done using _ffmpeg-dev_ libraries.gi
+Video decoding is done using _ffmpeg-dev_ libraries.
 
-# Description
-
-After execution, terminal window will be split into 2 parts, command window and main window. 
-+-------------------------+
-|                         |
-|                         |
-+-------------------------+
-|                         |
-+-------------------------+
-In command window you can write commands and on main window
 # Table of Contents
+- [Description](#description)
 - [Installation](#how-to-install-and-run)
     - [Linux](#linux)
     - [Windows](#windows)
@@ -24,6 +15,25 @@ In command window you can write commands and on main window
 - [Bugs](#bugs-and-issues)
 - [License](#license)
 
+# Description
+
+After execution, terminal window will be split into 2 parts.
+<pre>
++-------------------------+
+|                         |
+|       Main Window       |
+|                         |
++-------------------------+
+|      Command Window     |
++-------------------------+
+</pre>
+In the command window, you can enter [commands](#list-of-commands), while the main window displays most of the content using ASCII characters.
+
+Decoding, frame separation, and conversion occur dynamically at runtime without the need for temporary folders.
+
+Synchronization and multithreading between the main window and command window are achieved using semaphores and shared variables.
+
+Dynamic window resizing relies on _SIGWINCH_ (from signal.h), which may encounter issues on Windows but should function correctly on Unix-based operating systems, including MacOS.
 # How to Install and Run
 ### Linux:
 Download or clone this repository 
