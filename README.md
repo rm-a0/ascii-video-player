@@ -18,7 +18,7 @@ Compile using __make__
 ```
 make
 ```
-> [!TIP]
+> [!NOTE]
 > If compilation fails make sure you have correct library and include paths specified in the Makefile.
 > ```makefile
 > LDPATHS = -L/path/to/libraries
