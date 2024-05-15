@@ -18,13 +18,14 @@
 // Constants
 #define CMD_WIN_HEIGHT 3
 
-// Threads
-pthread_t vid_thread;
-
 // Initialize globally
+// Structs
 flags_t *flags = NULL;
 sems_t *sems = NULL;
 wins_t* wins = NULL;
+thrd_args_t *thrd_args = NULL;
+// Thread
+pthread_t vid_thread;
 
 void handle_winch() {
     flags->winch_flag = 1;
@@ -32,10 +33,19 @@ void handle_winch() {
 
 // Function for processing arguments in cmd_win
 int process_cmd(const char* cmd) {
-    switch (cmd[0]) {
+    // Split command into parts
+    char temp[256];
+    strcpy(temp, cmd);
+
+    char *token = strtok(temp, " ");
+    if (token == NULL) {
+        return 0;
+    }
+
+    switch (token[0]) {
         case 'h':
         // HELP
-            if (strcmp(cmd, "help") == 0) {
+            if (strcmp(token, "help") == 0) {
                 pause_vid(sems, flags);
                 display_help(wins);
             }
@@ -43,46 +53,29 @@ int process_cmd(const char* cmd) {
         case 'e':
         case 'q':
         // QUIT AND EXIT
-            if (strcmp(cmd, "quit") == 0 || strcmp(cmd, "exit") == 0) {
+            if (strcmp(token, "quit") == 0 || strcmp(token, "exit") == 0) {
                 return 1;
             }
         // END
-            else if (strcmp(cmd, "end") == 0) {
+            else if (strcmp(token, "end") == 0) {
                 mvwprintw(wins->cmd_win, 1, 1, "> TODO");
                 wrefresh(wins->cmd_win);
             }
             break;
         case 'r':
         // RESUME
-            if (strcmp(cmd, "resume") == 0) {
+            if (strcmp(token, "resume") == 0) {
                 resume_vid(sems, flags);
             }
             break;
         case 's':
         case 'p':
         // PLAY
-            if (strcmp(cmd, "play") == 0) {
-                char *vid_filename = "fate.mp4";
-
-                if (flags->vid_thrd_active == true) {
-                    mvwprintw(wins->cmd_win, 1, 1, "> Video is already playing");
-                    wrefresh(wins->cmd_win);
-                    break;
-                }
-                // Allocate memory for threads
-                // DO NOT PLAY TWICE ==> SEGFAULT
-                thrd_args_t *thrd_args = init_thrd_args(wins, vid_filename, sems);
-
-                // Start video playback in a new thread
-                if (pthread_create(&vid_thread, NULL, video_thread, (void *)thrd_args) != 0) {
-                    fprintf(stderr, "Error: Failed to start video playback thread\n");
-                }
-
-                flags->vid_playing = true;
-                flags->vid_thrd_active = true;
+            if (strcmp(token, "play") == 0) {
+                play_vid(strtok(NULL, " "), thrd_args, wins, flags, sems, &vid_thread);
             }
         // PAUSE AND STOP
-            else if (strcmp(cmd, "pause") == 0 || strcmp(cmd, "stop") == 0) {
+            else if (strcmp(token, "pause") == 0 || strcmp(token, "stop") == 0) {
                 pause_vid(sems, flags);
             }
             break;

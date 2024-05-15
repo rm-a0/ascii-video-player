@@ -8,7 +8,30 @@
 
 #include "avpl_sem.h"
 #include "avpl_flags.h"
+#include "avpl_thrd.h"
 #include "avpl_ui.h"
+
+/* Function: play_vid
+ * ------------------
+ * Function that plays specified media
+ * Allocates memory for thrd_args_t
+ * Creates new thread and passes arguments to it
+ * Sets flags
+ * 
+ * Parameters
+ * ----------
+ * filename - path to the media
+ * thrd_args - pointer to unitnitialized struct (will be malloced inside function)
+ * wins - pointer to struct containing windows
+ * flags - struct containing flags
+ * sems - struct containing semaphores
+ * thread - pointer to empty thread
+ * 
+ * Return value
+ * ------------
+ * if everything run successfully, return 0
+*/
+int play_vid(char* filename, thrd_args_t* thrd_args,  wins_t* wins, flags_t* flags, sems_t* sems, pthread_t* thread);
 
 /* Function: pause_vid
  * --------------------

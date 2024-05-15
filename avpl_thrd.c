@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <ncurses.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "avpl_thrd.h"
 #include "media_proc.h"
@@ -13,28 +14,47 @@
 void *video_thread(void *args) {
     // Unpack arguments
     thrd_args_t *thrd_args = (thrd_args_t*)args;
+    if (thrd_args == NULL) {
+        fprintf(stderr, "Error: Invalid thread arguments\n");
+        return NULL;
+    }
     char* filename = thrd_args->filename;
     wins_t *wins = thrd_args->wins;
     sems_t *sems = thrd_args->sems;
 
     // Call play media function
     if (play_media(filename, wins, sems) != 0) {
-        fprintf(stderr, "Something went wrong with video playback");
+        fprintf(stderr, "Something went wrong with video playback\n");
     }
+
     return NULL;
 }
 
 thrd_args_t* init_thrd_args(wins_t* wins, char* filename, sems_t *sems) {
     // Allocate memory for the struct
     thrd_args_t *thrd_args = malloc(sizeof(thrd_args_t));
-    // Check memory allocation
     if (thrd_args == NULL) {
         return NULL;
     }
+    // Allocate memory for filename string
+    thrd_args->filename = malloc(strlen(filename) + 1);
+    if (thrd_args->filename == NULL) {
+        fprintf(stderr, "Error: Failed to allocate memory for filename\n");
+        free(thrd_args);
+        return NULL;
+    }
+    
     // Initialize varaibles within the struct
-    thrd_args->filename = filename;
+    strcpy(thrd_args->filename, filename);
     thrd_args->wins = wins;
     thrd_args->sems = sems;
 
     return thrd_args;
+}
+
+void destroy_thrd_args(thrd_args_t* thrd_args) {
+    if (thrd_args != NULL) {
+        free(thrd_args->filename);
+        free(thrd_args);
+    }
 }

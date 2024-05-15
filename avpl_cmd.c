@@ -26,6 +26,37 @@ int resume_vid(sems_t *sems, flags_t *flags) {
     return 1;
 }
 
+int play_vid(char* filename, thrd_args_t* thrd_args,  wins_t* wins, flags_t* flags, sems_t* sems, pthread_t* thread) {
+    // Check if thread is active
+    if (flags->vid_thrd_active == true) {
+        mvwprintw(wins->cmd_win, 1, 1, "> Video is already playing");
+        wrefresh(wins->cmd_win);
+        return 1;
+    }
+
+    // Check if filename is valid
+    if (filename == NULL) {
+        mvwprintw(wins->cmd_win, 1, 1, "> Path not specified");
+        wrefresh(wins->cmd_win);
+        return 1;
+    }
+
+    // Allocate memory for thread arguments
+    thrd_args = init_thrd_args(wins, filename, sems);
+
+    // Start video playback in a new thread
+    if (pthread_create(thread, NULL, video_thread, (void *)thrd_args) != 0) {
+        fprintf(stderr, "Error: Failed to start video playback thread\n");
+        return 1;
+    }
+
+    // Set relevant flags
+    flags->vid_playing = true;
+    flags->vid_thrd_active = true;
+    
+    return 0;
+}
+
 void display_help(wins_t *wins) {
     // Erase window
     werase(wins->main_win);

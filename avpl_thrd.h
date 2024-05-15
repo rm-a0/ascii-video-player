@@ -59,4 +59,18 @@ void *video_thread(void *args);
 */
 thrd_args_t* init_thrd_args(wins_t* wins, char *filename, sems_t *sems);
 
+/* Function: destroy_thrd_args
+ * ------------------------
+ * Frees dynamically allocated memory for thrd_args_t struct
+ * 
+ * Parameters
+ * ----------
+ * thrd_args - pointer to a struct
+ * 
+ * Return value
+ * ------------
+ * void
+*/
+void destroy_thrd_args(thrd_args_t* thrd_args);
+
 #endif // AVPL_THRD_H__
