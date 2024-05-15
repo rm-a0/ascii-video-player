@@ -21,6 +21,7 @@ flags_t* init_flags() {
     flags->winch_flag = 0;
     flags->vid_thrd_active = false;
     flags->vid_playing = false;
+    flags->vid_end = false;
 
     return flags;
 }

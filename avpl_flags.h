@@ -23,6 +23,7 @@ typedef struct flags {
     volatile sig_atomic_t winch_flag;
     volatile bool vid_playing;
     volatile bool vid_thrd_active;
+    volatile bool vid_end;
 } flags_t;
 
 /* Function: init_flags

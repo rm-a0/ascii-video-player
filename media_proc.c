@@ -18,7 +18,7 @@ void display_error(WINDOW *win, const char *msg) {
     wrefresh(win);
 }
 
-int play_media(char *vid_title, wins_t *wins, sems_t *sems) {
+int play_media(char *vid_title, wins_t *wins, sems_t *sems, flags_t* flags) {
     avformat_network_init();    // Init network components
 
     // Initialize necessary components
@@ -98,6 +98,9 @@ int play_media(char *vid_title, wins_t *wins, sems_t *sems) {
                 
                 // Semaphore for pausing the video
                 sem_wait(&(sems->video));
+                if (flags->vid_end == true) {
+                    goto cleanup;
+                }
 
                 // Display decoded frame
                 frame_to_ascii(wins->main_win, frame, getmaxx(wins->main_win), getmaxy(wins->main_win));
@@ -112,8 +115,13 @@ int play_media(char *vid_title, wins_t *wins, sems_t *sems) {
     }
 
     // Cleanup
-    av_frame_free(&frame);
-    avcodec_free_context(&codec_ctx);
-    avformat_close_input(&format_ctx);
+    cleanup:
+        // Erase windows
+        werase(wins->main_win);
+        wrefresh(wins->main_win);
+        av_frame_free(&frame);
+        // Free allocated memory
+        avcodec_free_context(&codec_ctx);
+        avformat_close_input(&format_ctx);
     return 0;
 }

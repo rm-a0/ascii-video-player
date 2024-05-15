@@ -42,7 +42,7 @@ int play_vid(char* filename, thrd_args_t* thrd_args,  wins_t* wins, flags_t* fla
     }
 
     // Allocate memory for thread arguments
-    thrd_args = init_thrd_args(wins, filename, sems);
+    thrd_args = init_thrd_args(wins, filename, sems, flags);
 
     // Start video playback in a new thread
     if (pthread_create(thread, NULL, video_thread, (void *)thrd_args) != 0) {
@@ -53,7 +53,34 @@ int play_vid(char* filename, thrd_args_t* thrd_args,  wins_t* wins, flags_t* fla
     // Set relevant flags
     flags->vid_playing = true;
     flags->vid_thrd_active = true;
-    
+
+    return 0;
+}
+
+int end_vid(thrd_args_t* thrd_args, sems_t* sems, wins_t* wins, flags_t* flags, pthread_t* thread) {
+    // Check if thread is active
+    if (flags->vid_thrd_active == false) {
+        return 1;
+    }
+
+    // Check if vid is playing to prevent semaphore deadlock
+    resume_vid(sems, flags);
+    flags->vid_end = true;
+
+    if (pthread_join(*thread, NULL) != 0) {
+        mvwprintw(wins->cmd_win, 1, 1, "> Failed to join video thread");
+        wrefresh(wins->cmd_win);
+        return 1;
+    }
+    // Reset flag after joining threads
+    flags->vid_end = false;
+
+    // Free memory for thread arguments
+    destroy_thrd_args(thrd_args);
+
+    // Reset flags
+    flags->vid_playing = false;
+    flags->vid_thrd_active = false;
     return 0;
 }
 

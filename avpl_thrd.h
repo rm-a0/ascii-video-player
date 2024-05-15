@@ -11,6 +11,7 @@
 
 #include "avpl_sem.h"
 #include "avpl_ui.h"
+#include "avpl_flags.h"
 
 /* Struct: thrd_args
  * -----------------
@@ -27,6 +28,7 @@ typedef struct thrd_args {
     char *filename;
     wins_t* wins;
     sems_t* sems;
+    flags_t* flags;
 } thrd_args_t;
 
 /* Function: video_thread
@@ -52,12 +54,14 @@ void *video_thread(void *args);
  * ----------
  * win - pointer to a window
  * filename - name of the media file
+ * sems - struct containing semaphores
+ * flags - struct containing flags
  * 
  * Return value
  * ------------
  * pointer to a thrd_args_t struct
 */
-thrd_args_t* init_thrd_args(wins_t* wins, char *filename, sems_t *sems);
+thrd_args_t* init_thrd_args(wins_t* wins, char *filename, sems_t *sems, flags_t* flags);
 
 /* Function: destroy_thrd_args
  * ---------------------------

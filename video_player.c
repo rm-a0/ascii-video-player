@@ -58,8 +58,7 @@ int process_cmd(const char* cmd) {
             }
         // END
             else if (strcmp(token, "end") == 0) {
-                mvwprintw(wins->cmd_win, 1, 1, "> TODO");
-                wrefresh(wins->cmd_win);
+                end_vid(thrd_args, sems, wins, flags, &vid_thread);
             }
             break;
         case 'r':

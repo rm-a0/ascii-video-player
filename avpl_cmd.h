@@ -33,6 +33,27 @@
 */
 int play_vid(char* filename, thrd_args_t* thrd_args,  wins_t* wins, flags_t* flags, sems_t* sems, pthread_t* thread);
 
+/* Function: end_vid
+ * ------------------
+ * Function that ends video that is currently playing
+ * Joins video thread with main thread
+ * Frees allocated memory for thrd_args
+ * Resets flags that were set in play_vid function
+ * 
+ * Parameters
+ * ----------
+ * thrd_args - pointer to initialized struct (will be freed in this function)
+ * sems - struct containing semaphores
+ * wins - pointer to struct containing windows
+ * flags - struct containing flags
+ * thread - pointer to a thread
+ * 
+ * Return value
+ * ------------
+ * if video ended sucesfully, return 0
+*/
+int end_vid(thrd_args_t* thrd_args, sems_t* sems, wins_t* wins, flags_t* flags, pthread_t* thread);
+
 /* Function: pause_vid
  * --------------------
  * Pauses the video only if the video is playing

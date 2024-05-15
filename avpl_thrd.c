@@ -21,16 +21,17 @@ void *video_thread(void *args) {
     char* filename = thrd_args->filename;
     wins_t *wins = thrd_args->wins;
     sems_t *sems = thrd_args->sems;
+    flags_t *flags = thrd_args->flags;
 
     // Call play media function
-    if (play_media(filename, wins, sems) != 0) {
+    if (play_media(filename, wins, sems, flags) != 0) {
         fprintf(stderr, "Something went wrong with video playback\n");
     }
 
     return NULL;
 }
 
-thrd_args_t* init_thrd_args(wins_t* wins, char* filename, sems_t *sems) {
+thrd_args_t* init_thrd_args(wins_t* wins, char* filename, sems_t *sems, flags_t* flags) {
     // Allocate memory for the struct
     thrd_args_t *thrd_args = malloc(sizeof(thrd_args_t));
     if (thrd_args == NULL) {
@@ -48,6 +49,7 @@ thrd_args_t* init_thrd_args(wins_t* wins, char* filename, sems_t *sems) {
     strcpy(thrd_args->filename, filename);
     thrd_args->wins = wins;
     thrd_args->sems = sems;
+    thrd_args->flags = flags;
 
     return thrd_args;
 }
