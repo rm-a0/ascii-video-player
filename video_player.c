@@ -54,6 +54,7 @@ int process_cmd(const char* cmd) {
         case 'q':
         // QUIT AND EXIT
             if (strcmp(token, "quit") == 0 || strcmp(token, "exit") == 0) {
+                end_vid(thrd_args, sems, wins, flags, &vid_thread);
                 return 1;
             }
         // END
