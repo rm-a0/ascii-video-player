@@ -94,6 +94,8 @@ After you run the program type _help_ to display instructions
 - [x]  Resizing causes crash when video is playing
 - [x]  Windows are not being resized properly
 - [x]  Major memory leaks after exiting program
+- [x]  Thread arguments not accessible in the thread
+- [ ]  Joining threads causes issues
 - [ ]  Resizing causes crash when font is too small (Ctrl -)
 - [ ]  Resizing causes crash when terminal is too small
 
