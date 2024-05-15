@@ -4,12 +4,9 @@
 # Date: 10.05.2024
 
 #TODO
-#   Add quit video flag
-#   Add display help command
-#   Add end command
+#   Create custom print functions
+#   Add color to video
 #	Center video and adjust resizing (for heigh videos)
-#	Add signals for segfaults
-#	Reorganize code to headerfiles
 
 CC = gcc
 CFLAGS = -O2 -g -std=c11 -pedantic -Wall -Wextra
