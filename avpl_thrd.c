@@ -25,7 +25,8 @@ void *video_thread(void *args) {
 
     // Call play media function
     if (play_media(filename, wins, sems, flags) != 0) {
-        fprintf(stderr, "Something went wrong with video playback\n");
+        flags->vid_playing = false;
+        flags->vid_thrd_active = false;
     }
 
     return NULL;

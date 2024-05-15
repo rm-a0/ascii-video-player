@@ -98,9 +98,6 @@ int play_media(char *vid_title, wins_t *wins, sems_t *sems, flags_t* flags) {
                 
                 // Semaphore for pausing the video
                 sem_wait(&(sems->video));
-                if (flags->vid_end == true) {
-                    goto cleanup;
-                }
 
                 // Display decoded frame
                 frame_to_ascii(wins->main_win, frame, getmaxx(wins->main_win), getmaxy(wins->main_win));
@@ -109,6 +106,12 @@ int play_media(char *vid_title, wins_t *wins, sems_t *sems, flags_t* flags) {
                 
                 // Unlock semaphore
                 sem_post(&(sems->video));
+
+                // End video if flag is set
+                if (flags->vid_end == true) {
+                    flags->vid_end = false;
+                    goto cleanup;
+                }
             }
         }
         av_packet_unref(&packet);

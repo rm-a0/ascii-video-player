@@ -21,7 +21,7 @@
  * Parameters
  * ----------
  * filename - path to the media
- * thrd_args - pointer to unitnitialized struct (will be malloced inside function)
+ * thrd_args - pointer reference to unitnitialized struct (will be malloced inside function)
  * wins - pointer to struct containing windows
  * flags - struct containing flags
  * sems - struct containing semaphores
@@ -31,7 +31,7 @@
  * ------------
  * if everything run successfully, return 0
 */
-int play_vid(char* filename, thrd_args_t* thrd_args,  wins_t* wins, flags_t* flags, sems_t* sems, pthread_t* thread);
+int play_vid(char* filename, thrd_args_t** thrd_args,  wins_t* wins, flags_t* flags, sems_t* sems, pthread_t* thread);
 
 /* Function: end_vid
  * ------------------

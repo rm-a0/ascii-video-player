@@ -71,7 +71,7 @@ int process_cmd(const char* cmd) {
         case 'p':
         // PLAY
             if (strcmp(token, "play") == 0) {
-                play_vid(strtok(NULL, " "), thrd_args, wins, flags, sems, &vid_thread);
+                play_vid(strtok(NULL, " "), &thrd_args, wins, flags, sems, &vid_thread);
             }
         // PAUSE AND STOP
             else if (strcmp(token, "pause") == 0 || strcmp(token, "stop") == 0) {
