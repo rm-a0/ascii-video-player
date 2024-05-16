@@ -27,17 +27,14 @@ int resume_vid(sems_t *sems, flags_t *flags) {
 }
 
 int play_vid(char* filename, thrd_args_t** thrd_args,  wins_t* wins, flags_t* flags, sems_t* sems, pthread_t* thread) {
-    // Check if thread is active
+    // End active thread and start a new one
     if (flags->vid_thrd_active == true) {
-        mvwprintw(wins->cmd_win, 1, 1, "> Video is already playing");
-        wrefresh(wins->cmd_win);
-        return 1;
+        end_vid(*thrd_args, sems, wins, flags, thread);
     }
 
     // Check if filename is valid
     if (filename == NULL) {
-        mvwprintw(wins->cmd_win, 1, 1, "> Path not specified");
-        wrefresh(wins->cmd_win);
+        cmd_print(wins->cmd_win, "Path not specified");
         return 1;
     }
 
@@ -68,8 +65,7 @@ int end_vid(thrd_args_t* thrd_args, sems_t* sems, wins_t* wins, flags_t* flags, 
     flags->vid_end = true;
 
     if (pthread_join(*thread, NULL) != 0) {
-        mvwprintw(wins->cmd_win, 1, 1, "> Failed to join video thread");
-        wrefresh(wins->cmd_win);
+        cmd_print(wins->cmd_win, "Failed to join video thread");
         return 1;
     }
 
