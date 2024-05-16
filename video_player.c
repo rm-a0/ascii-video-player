@@ -101,9 +101,8 @@ int main() {
     flags = init_flags();           // Init flags
     wins = init_ui(CMD_WIN_HEIGHT); // Init windows
 
-    // Display '>' in cmd_win
-    mvwprintw(wins->cmd_win, 1, 1, "> ");
-    wrefresh(wins->cmd_win);
+    // Display command line
+    cmd_print(wins->cmd_win, "");
 
     // Loop for processing commands
     char cmd[256];
@@ -113,9 +112,8 @@ int main() {
             wgetstr(wins->cmd_win, cmd);
             wclear(wins->cmd_win);                   
             
-            // Redisplay ">"
-            mvwprintw(wins->cmd_win, 1, 1, "> ");
-            wrefresh(wins->cmd_win);
+            // Redisplay command line
+            cmd_print(wins->cmd_win, "");
 
             // Process commands
             if ((process_cmd(cmd)) == 1) {

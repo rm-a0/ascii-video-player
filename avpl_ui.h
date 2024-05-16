@@ -70,4 +70,36 @@ void destroy_ui(wins_t *wins);
 */
 int resize_ui(wins_t *wins, int cmd_win_height);
 
+/* Function: win_print
+ * -------------------
+ * Function that prints msg to a window
+ * 
+ * Parameters
+ * ----------
+ * win - pointer to a window
+ * msg - message you want to print
+ * ... - other arguments
+ * 
+ * Return value
+ * ------------
+ * void
+*/
+void win_print(WINDOW* win, const char* msg, ...);
+
+/* Function: cmd_print
+ * -------------------
+ * Function that prints msg to command window
+ * 
+ * Parameters
+ * ----------
+ * cmd_win - pointer to a command window
+ * msg - message you want to print
+ * ... - other arguments
+ * 
+ * Return value
+ * ------------
+ * void
+*/
+void cmd_print(WINDOW* cmd_win, const char* msg, ...);
+
 #endif // AVPL_UI_H__

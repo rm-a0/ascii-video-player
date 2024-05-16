@@ -77,3 +77,23 @@ int resize_ui(wins_t *wins, int cmd_win_height) {
 
     return 0;
 }
+
+void win_print(WINDOW* win, const char* msg, ...) {
+    va_list args;
+    va_start(args, msg);
+    werase(win);
+    mvwprintw(win, 0, 0, msg, args); 
+    wrefresh(win);
+    va_end(args);
+}
+
+void cmd_print(WINDOW* cmd_win, const char* msg, ...) {
+    va_list args;
+    va_start(args, msg);
+    werase(cmd_win);
+    mvwprintw(cmd_win, 1, 1, "> ");
+    wmove(cmd_win, 1, 3);
+    vw_printw(cmd_win, msg, args);
+    wrefresh(cmd_win);
+    va_end(args);
+}
