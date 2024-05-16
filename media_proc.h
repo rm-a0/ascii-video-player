@@ -29,19 +29,4 @@
 */
 int play_media(char *vid_title, wins_t* wins, sems_t *sems, flags_t* flags);
 
-/* Function: display_error
- * -----------------------
- * Displays error message on specified window
- * 
- * Parameters
- * ----------
- * win - pointer to a window where the message should be displayed
- * msg - message that should be displayed
- * 
- * Return value
- * ------------
- * void
-*/
-void display_error(WINDOW *win, const char *msg);
-
 #endif // MEDIA_PROC_H__
