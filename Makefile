@@ -1,10 +1,9 @@
 # Makefile
 # ---------------------
 # Author: Michal Repcik
-# Date:	16.05.2024
+# Date:	  16.05.2024
 
 #TODO
-#   Create custom print functions
 #   Add color to video
 #	Center video and adjust resizing (for heigh videos)
 
