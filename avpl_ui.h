@@ -1,7 +1,7 @@
 /* avpl_ui.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    06.04.2024
+ * Date:	16.05.2024
 */
 #ifndef AVPL_UI_H__
 #define AVPL_UI_H__

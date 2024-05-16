@@ -1,7 +1,7 @@
 /* avpl_flags.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    05.04.2024
+ * Date: 	16.05.2024
 */
 #define _POSIX_C_SOURCE 199309L     // Sigaction
 #include <stdio.h>

@@ -1,7 +1,7 @@
 /* video_player.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    10.05.2024
+ * Date:    16.05.2024
 */
 #include <stdio.h>
 #include <stdlib.h>

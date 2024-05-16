@@ -1,7 +1,7 @@
 /* avpl_sem.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    05.04.2024
+ * Date:	16.05.2024
 */
 #ifndef AVPL_SEM_H__
 #define AVPL_SEM_H__

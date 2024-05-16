@@ -1,7 +1,7 @@
 # Makefile
 # ---------------------
 # Author: Michal Repcik
-# Date: 10.05.2024
+# Date:	16.05.2024
 
 #TODO
 #   Create custom print functions

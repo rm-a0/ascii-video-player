@@ -1,4 +1,5 @@
 *.mp4
 .vscode/
 *.o
+*.sh
 video_player

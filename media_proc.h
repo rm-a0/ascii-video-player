@@ -1,7 +1,7 @@
 /* media_proc.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    10.05.2024
+ * Date:	16.05.2024
 */
 #ifndef MEDIA_PROC_H__
 #define MEDIA_PROC_H__

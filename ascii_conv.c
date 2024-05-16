@@ -1,7 +1,7 @@
 /* ascii_conv.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    07.04.2024
+ * Date: 	16.05.2024
 */
 #include "ascii_conv.h"
 

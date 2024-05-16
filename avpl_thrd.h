@@ -1,7 +1,7 @@
 /* avpl_thrd.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    10.05.2024
+ * Date:	16.05.2024
 */
 #ifndef AVPL_THRD_H__
 #define AVPL_THRD_H__

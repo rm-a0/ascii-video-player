@@ -1,7 +1,7 @@
 /* avpl_cmd.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:    10.05.2024
+ * Date:	16.05.2024
 */
 #ifndef AVPL_CMD_H__
 #define AVPL_CMD_H__
