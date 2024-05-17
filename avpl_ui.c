@@ -4,6 +4,7 @@
  * Date:	17.05.2024
 */
 #include <stdlib.h>
+#include <limits.h>
 
 #include "avpl_ui.h"
 
@@ -66,6 +67,13 @@ int resize_ui(wins_t *wins, int cmd_win_height) {
     }
     if (main_win_width <= 0) {
         main_win_width = 1;
+    }
+    // Prevent integer overflow issues
+    if (LINES > INT_MAX) {
+        main_win_height = INT_MAX - cmd_win_height;
+    }
+    if (COLS > INT_MAX) {
+        main_win_width = INT_MAX;
     }
 
     // Recreate main window
