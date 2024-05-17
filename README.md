@@ -78,6 +78,7 @@ After you run the program type _help_ to display instructions
 | `stop`, `pause`     | Stops video that is currently playing       |
 | `resume`            | Resumes a paused video                      |
 | `end`               | Ends video that is currently playing        |
+| `speed [float]`     | Changes speed of video playback globally    |
 
 # Updates and Features
 - [x]  Dynamic window resizing
@@ -86,7 +87,7 @@ After you run the program type _help_ to display instructions
 - [ ]  Enhanced user interface
 - [ ]  Video playback in color
 - [ ]  Video quality filter
-- [ ]  Video speed filter
+- [x]  Video speed filter
 - [ ]  CMake and DLLs for MacOS and Windows support
 - [ ]  Semaphore tweaks for MacOS
 
