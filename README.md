@@ -78,7 +78,7 @@ After you run the program type _help_ to display instructions
 | `stop`, `pause`               | Stops video that is currently playing       |
 | `resume`                      | Resumes a paused video                      |
 | `end`                         | Ends video that is currently playing        |
-| `speed [normal/ float]`       | Changes speed of video playback globally    |
+| `speed [float]`               | Changes speed of video playback globally    |
 
 # Updates and Features
 - [x]  Dynamic window resizing
