@@ -70,15 +70,15 @@ CMake will be added in the future.
 After you run the program type _help_ to display instructions
 
 ### List of commands
-| Command             | Description                                 |
-|---------------------|---------------------------------------------|
-| `help`              | Displays instructions                       |
-| `exit`, `quit`      | Exits the program                           |
-| `play [file]`       | Plays specified file                        |
-| `stop`, `pause`     | Stops video that is currently playing       |
-| `resume`            | Resumes a paused video                      |
-| `end`               | Ends video that is currently playing        |
-| `speed [float]`     | Changes speed of video playback globally    |
+| Command                       | Description                                 |
+|-------------------------------|---------------------------------------------|
+| `help`                        | Displays instructions                       |
+| `exit`, `quit`                | Exits the program                           |
+| `play [file]`                 | Plays specified file                        |
+| `stop`, `pause`               | Stops video that is currently playing       |
+| `resume`                      | Resumes a paused video                      |
+| `end`                         | Ends video that is currently playing        |
+| `speed [normal/ float]`       | Changes speed of video playback globally    |
 
 # Updates and Features
 - [x]  Dynamic window resizing
