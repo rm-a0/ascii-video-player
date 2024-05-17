@@ -60,6 +60,14 @@ int resize_ui(wins_t *wins, int cmd_win_height) {
     int main_win_height = LINES - cmd_win_height;
     int main_win_width = COLS;
 
+    // Prevent negative memory allocation
+    if (main_win_height <= 0) {
+        main_win_height = 1;
+    }
+    if (main_win_width <= 0) {
+        main_win_width = 1;
+    }
+
     // Recreate main window
     wins->main_win = newwin(main_win_height, main_win_width, 0, 0);
     if (wins->main_win == NULL) {
