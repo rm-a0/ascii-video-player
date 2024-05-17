@@ -1,7 +1,7 @@
 /* avpl_flags.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:	16.05.2024
+ * Date:	17.05.2024
 */
 #ifndef AVPL_FLAGS_H__
 #define AVPL_FLAGS_H__
@@ -24,6 +24,7 @@ typedef struct flags {
     volatile bool vid_playing;
     volatile bool vid_thrd_active;
     volatile bool vid_end;
+    volatile float vid_speed;
 } flags_t;
 
 /* Function: init_flags

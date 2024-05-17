@@ -1,7 +1,7 @@
 /* video_player.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:    16.05.2024
+ * Date:    17.05.2024
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,17 +19,11 @@
 #define CMD_WIN_HEIGHT 3
 
 // Initialize globally
-// Structs
 flags_t *flags = NULL;
 sems_t *sems = NULL;
 wins_t* wins = NULL;
 thrd_args_t *thrd_args = NULL;
-// Thread
 pthread_t vid_thread;
-
-void handle_winch() {
-    flags->winch_flag = 1;
-}
 
 // Function for processing arguments in cmd_win
 int process_cmd(const char* cmd) {
@@ -78,6 +72,10 @@ int process_cmd(const char* cmd) {
             else if (strcmp(token, "pause") == 0 || strcmp(token, "stop") == 0) {
                 pause_vid(sems, flags);
             }
+        // SPEED
+            else if (strcmp(token, "speed") == 0) {
+                change_speed(strtok(NULL, " "), flags);
+            }
             break;
         default:
             wrefresh(wins->cmd_win);
@@ -109,12 +107,9 @@ int main() {
     while (1) {
         if (flags->winch_flag != 1) {
             // Get user input
-            wgetstr(wins->cmd_win, cmd);
-            wclear(wins->cmd_win);                   
-            
+            wgetstr(wins->cmd_win, cmd);                   
             // Redisplay command line
             cmd_print(wins->cmd_win, "");
-
             // Process commands
             if ((process_cmd(cmd)) == 1) {
                 break;
@@ -123,10 +118,8 @@ int main() {
         else {
             // Check if video is playing
             int p_check = pause_vid(sems, flags);
-
             // Resize ui
             resize_ui(wins, CMD_WIN_HEIGHT);
-
             // Resume video if it was playing
             if (p_check == 0) {
                 resume_vid(sems, flags);

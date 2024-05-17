@@ -1,30 +1,16 @@
 /* avpl_cmd.c
  * ----------------------
  * Author:  Michal Repcik
- * Date: 	16.05.2024
+ * Date:	17.05.2024
 */
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 
 #include "avpl_cmd.h"
 
-int pause_vid(sems_t *sems, flags_t *flags) {
-    if (flags->vid_playing == true) {
-        flags->vid_playing = false;
-        sem_wait(&(sems->video));
-        return 0;
-    }
-    return 1;
-}
 
-int resume_vid(sems_t *sems, flags_t *flags) {
-    if (flags->vid_playing == false) {
-        flags->vid_playing = true;
-        sem_post(&(sems->video));
-        return 0;
-    }
-    return 1;
-}
 
 int play_vid(char* filename, thrd_args_t** thrd_args,  wins_t* wins, flags_t* flags, sems_t* sems, pthread_t* thread) {
     // End active thread and start a new one
@@ -78,6 +64,38 @@ int end_vid(thrd_args_t* thrd_args, sems_t* sems, wins_t* wins, flags_t* flags, 
     return 0;
 }
 
+int pause_vid(sems_t *sems, flags_t *flags) {
+    if (flags->vid_playing == true) {
+        flags->vid_playing = false;
+        sem_wait(&(sems->video));
+        return 0;
+    }
+    return 1;
+}
+
+int resume_vid(sems_t *sems, flags_t *flags) {
+    if (flags->vid_playing == false) {
+        flags->vid_playing = true;
+        sem_post(&(sems->video));
+        return 0;
+    }
+    return 1;
+}
+
+int change_speed(char* speed, flags_t* flags) {
+    if (strcmp(speed, "0") == 0) {
+        return 1;
+    }
+    else if (strcmp(speed, "normal") == 0) {
+        flags->vid_speed = 1.0;
+    }
+    else {
+        flags->vid_speed = atof(speed);
+    }
+
+    return 0;
+}
+
 void display_help(wins_t *wins) {
     // Erase window
     werase(wins->main_win);
@@ -90,6 +108,8 @@ void display_help(wins_t *wins) {
     wprintw(wins->main_win, "   play [/path/to/file]        - plays chosen media\n");
     wprintw(wins->main_win, "   pause, stop                 - pauses the video\n");
     wprintw(wins->main_win, "   resume                      - resumes the video\n");
+    wprintw(wins->main_win, "   end                         - ends video\n");
+    wprintw(wins->main_win, "   speed [normal, 1.2, ...]    - adjusts video speed globally\n");
 
     // Refresh window
     wrefresh(wins->main_win);

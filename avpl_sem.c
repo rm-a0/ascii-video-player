@@ -1,7 +1,7 @@
 /* avpl_sem.c
  * ----------------------
  * Author:  Michal Repcik
- * Date: 	16.05.2024
+ * Date:	17.05.2024
 */
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,7 +1,7 @@
 /* avpl_flags.c
  * ----------------------
  * Author:  Michal Repcik
- * Date: 	16.05.2024
+ * Date:	17.05.2024
 */
 #define _POSIX_C_SOURCE 199309L     // Sigaction
 #include <stdio.h>
@@ -9,6 +9,8 @@
 #include <stdbool.h>
 
 #include "avpl_flags.h"
+
+extern flags_t *flags;
 
 flags_t* init_flags() {
     // Alocate memory for flags struct
@@ -22,6 +24,7 @@ flags_t* init_flags() {
     flags->vid_thrd_active = false;
     flags->vid_playing = false;
     flags->vid_end = false;
+    flags->vid_speed = 1;
 
     return flags;
 }
@@ -40,4 +43,8 @@ void init_sig() {
 
     // Set up signal handlers for SIGWINCH
     sigaction(SIGWINCH, &sa_winch, NULL);
+}
+
+void handle_winch() {
+    flags->winch_flag = 1;
 }

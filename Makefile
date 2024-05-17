@@ -1,7 +1,7 @@
 # Makefile
 # ---------------------
 # Author: Michal Repcik
-# Date:	  16.05.2024
+# Date:	16.05.24
 
 #TODO
 #   Add color to video

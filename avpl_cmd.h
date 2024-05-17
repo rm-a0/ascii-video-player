@@ -1,7 +1,7 @@
 /* avpl_cmd.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:	16.05.2024
+ * Date:	17.05.2024
 */
 #ifndef AVPL_CMD_H__
 #define AVPL_CMD_H__
@@ -83,6 +83,21 @@ int pause_vid(sems_t *sems, flags_t *flags);
  * if video was sucesfully resumed, return 0
 */
 int resume_vid(sems_t *sems, flags_t *flags);
+
+/* Function: change_speed
+ * ----------------------
+ * Changes speed multiplier inside the flags_t struct
+ * 
+ * Parameters
+ * ----------
+ * speed - pointer to sting containing speed
+ * flags - struct containing flags
+ * 
+ * Return value
+ * ------------
+ * if speed was sucesfully changed, return 0
+*/
+int change_speed(char* speed, flags_t* flags);
 
 /* Function: display_help
  * ----------------------

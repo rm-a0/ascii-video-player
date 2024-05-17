@@ -1,7 +1,7 @@
 /* media_proc.c
  * ----------------------
  * Author:  Michal Repcik
- * Date: 	16.05.2024
+ * Date:	17.05.2024
 */
 #define _XOPEN_SOURCE 500           // Solves usleep compilation issues
 #include <stdio.h>
@@ -95,7 +95,7 @@ int play_media(char *vid_title, wins_t *wins, sems_t *sems, flags_t* flags) {
 
                 // Display decoded frame
                 frame_to_ascii(wins->main_win, frame, getmaxx(wins->main_win), getmaxy(wins->main_win));
-                usleep(50000);
+                usleep(50000/flags->vid_speed);
                 wrefresh(wins->main_win);
                 
                 // Unlock semaphore
