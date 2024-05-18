@@ -1,7 +1,7 @@
 /* avpl_cmd.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:	17.05.2024
+ * Date:	18.05.2024
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,8 +9,6 @@
 #include <stdbool.h>
 
 #include "avpl_cmd.h"
-
-
 
 int play_vid(char* filename, thrd_args_t** thrd_args,  wins_t* wins, flags_t* flags, sems_t* sems, pthread_t* thread) {
     // End active thread and start a new one

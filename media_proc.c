@@ -1,7 +1,7 @@
 /* media_proc.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:	17.05.2024
+ * Date:	18.05.2024
 */
 #define _XOPEN_SOURCE 500           // Solves usleep compilation issues
 #include <stdio.h>

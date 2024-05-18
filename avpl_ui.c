@@ -1,7 +1,7 @@
 /* avpl_ui.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:	17.05.2024
+ * Date:	18.05.2024
 */
 #include <stdlib.h>
 #include <limits.h>

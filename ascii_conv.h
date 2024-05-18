@@ -1,7 +1,7 @@
 /* ascii_conv.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:	17.05.2024
+ * Date:	18.05.2024
 */
 #ifndef ASCII_CONV_H__
 #define ASCII_CONV_H__

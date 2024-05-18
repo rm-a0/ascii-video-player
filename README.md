@@ -84,10 +84,8 @@ After you run the program type _help_ to display instructions
 - [x]  Dynamic window resizing
 - [x]  Help instructions
 - [x]  Pause and Resume commands
-- [ ]  Enhanced user interface
-- [ ]  Video playback in color
-- [ ]  Video quality filter
 - [x]  Video speed filter
+- [ ]  Video playback in color
 - [ ]  CMake and DLLs for MacOS and Windows support
 - [ ]  Semaphore tweaks for MacOS
 
@@ -99,7 +97,7 @@ After you run the program type _help_ to display instructions
 - [x]  After video ends new video does not play (pause causes deadlock)
 - [x]  Resizing causes crash when terminal is too small
 - [ ]  Sometimes text overflows when typing commands or resizing while video is playing(semaphores)
-- [ ]  After video ends naturally it cant be played again
+- [x]  After video ends naturally it cant be played again
 - [ ]  Resizing causes crash (Illegal operation) when font is too small (Ctrl -)
 
 # License

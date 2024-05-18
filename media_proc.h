@@ -1,7 +1,7 @@
 /* media_proc.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:	17.05.2024
+ * Date:	18.05.2024
 */
 #ifndef MEDIA_PROC_H__
 #define MEDIA_PROC_H__
@@ -15,6 +15,7 @@
 /* Function: play_media
  * --------------------
  * Separates video into frames and passes them to ascii_conv function
+ * Function runs indefinitely untill flag is set (either by play or end function)
  * 
  * Parameters
  * ----------

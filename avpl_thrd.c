@@ -1,7 +1,7 @@
 /* avpl_thrd.c
  * ----------------------
  * Author:  Michal Repcik
- * Date:	17.05.2024
+ * Date:	18.05.2024
 */
 #include <stdio.h>
 #include <ncurses.h>
