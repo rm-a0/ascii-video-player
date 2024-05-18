@@ -5,7 +5,7 @@
 */
 #include "ascii_conv.h"
 
-#define ASCII_CHARS     " .,:;i1tfLCG08@"
+#define ASCII_CHARS   " .:-=+*#%\"@##"
 #define PIXEL_WIDTH     3
 #define PIXEL_HEIGHT    2
 
