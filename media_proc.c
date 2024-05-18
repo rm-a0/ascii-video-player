@@ -109,7 +109,14 @@ int play_media(char *vid_title, wins_t *wins, sems_t *sems, flags_t* flags) {
         }
         av_packet_unref(&packet);
     }
-
+    win_print(wins->main_win, "End of video");
+    // Wait for flag
+    while (1) {
+        if (flags->vid_end == true) {
+            flags->vid_end = false;
+            break;
+        }
+    }
     // Cleanup
     cleanup:
         // Erase windows

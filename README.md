@@ -97,7 +97,9 @@ After you run the program type _help_ to display instructions
 - [x]  Major memory leaks after exiting program
 - [x]  Thread arguments not accessible in the thread
 - [x]  After video ends new video does not play (pause causes deadlock)
-- [ ]  Resizing causes crash (Illegal operation) when font is too small (Ctrl -)
 - [x]  Resizing causes crash when terminal is too small
+- [ ]  Sometimes text overflows when typing commands or resizing while video is playing(semaphores)
+- [ ]  After video ends naturally it cant be played again
+- [ ]  Resizing causes crash (Illegal operation) when font is too small (Ctrl -)
 
 # License
