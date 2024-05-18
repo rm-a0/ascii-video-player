@@ -44,4 +44,5 @@ void frame_to_ascii(WINDOW *win, AVFrame *frame, int w_height, int w_width) {
             mvwaddch(win, y / char_height, x / char_width, ascii_char);
         }
     }
+    wrefresh(win);
 }

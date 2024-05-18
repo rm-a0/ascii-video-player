@@ -103,7 +103,7 @@ int main() {
     cmd_print(wins->cmd_win, "");
 
     // Loop for processing commands
-    char cmd[256];
+    char cmd[2560];
     while (1) {
         if (flags->winch_flag != 1) {
             // Get user input

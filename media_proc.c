@@ -96,7 +96,6 @@ int play_media(char *vid_title, wins_t *wins, sems_t *sems, flags_t* flags) {
                 // Display decoded frame
                 frame_to_ascii(wins->main_win, frame, getmaxx(wins->main_win), getmaxy(wins->main_win));
                 usleep(50000/flags->vid_speed);
-                wrefresh(wins->main_win);
                 
                 // Unlock semaphore
                 sem_post(&(sems->video));
