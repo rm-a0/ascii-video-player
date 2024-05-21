@@ -38,7 +38,7 @@ Dynamic window resizing relies on _SIGWINCH_ (from signal.h), which may encounte
 ### Linux:
 Download or clone this repository 
 ```
-git clone https://github.com/rm-a0/ASCII-Video-Player
+git clone https://github.com/rm-a0/ascii-video-player
 ```
 Install [__ffmpeg__](https://github.com/FFmpeg/FFmpeg) and [__ncurses__](https://github.com/mirror/ncurses) before compilation
 ```
