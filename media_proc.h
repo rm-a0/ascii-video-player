@@ -1,7 +1,7 @@
 /* media_proc.h
  * ----------------------
  * Author:  Michal Repcik
- * Date:	18.05.2024
+ * Date:	27.05.2024
 */
 #ifndef MEDIA_PROC_H__
 #define MEDIA_PROC_H__
@@ -11,6 +11,7 @@
 #include "avpl_sem.h"
 #include "avpl_flags.h"
 #include "avpl_ui.h"
+#include <libavcodec/avcodec.h>
 
 /* Function: play_media
  * --------------------
