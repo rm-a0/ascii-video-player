@@ -16,7 +16,7 @@ int play_media(char *vid_title, wins_t *wins, sems_t *sems, flags_t* flags) {
     avformat_network_init();    // Init network components
 
     // Initialize necessary components
-    AVCodec *codec = NULL;
+    const AVCodec *codec = NULL;
     AVPacket packet;
     AVFrame *frame = NULL;
     int video_stream_index;
