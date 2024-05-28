@@ -13,7 +13,6 @@ Video decoding is done using _ffmpeg-dev_ libraries.
 - [Usage](#how-to-use)
 - [Updates](#updates-and-features)
 - [Bugs](#bugs-and-issues)
-- [License](#license)
 
 # Description
 
@@ -99,5 +98,3 @@ After you run the program type _help_ to display instructions
 - [ ]  Sometimes text overflows when typing commands or resizing while video is playing(semaphores)
 - [x]  After video ends naturally it cant be played again
 - [ ]  Resizing causes crash (Illegal operation) when font is too small (Ctrl -)
-
-# License
