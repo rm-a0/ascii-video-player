@@ -98,3 +98,4 @@ After you run the program type _help_ to display instructions
 - [ ]  Sometimes text overflows when typing commands or resizing while video is playing(semaphores)
 - [x]  After video ends naturally it cant be played again
 - [ ]  Resizing causes crash (Illegal operation) when font is too small (Ctrl -)
+- [ ]  Pause doesnt work on debian (but it works on Ubuntu WSL)
