@@ -95,7 +95,8 @@ After you run the program type _help_ to display instructions
 - [x]  Thread arguments not accessible in the thread
 - [x]  After video ends new video does not play (pause causes deadlock)
 - [x]  Resizing causes crash when terminal is too small
-- [ ]  Sometimes text overflows when typing commands or resizing while video is playing(semaphores)
+- [ ]  Sometimes text overflows when typing commands or resizing while video is playing (semaphores)
 - [x]  After video ends naturally it cant be played again
+- [x]  Pause doesnt work on debian (but it works on Ubuntu WSL)
 - [ ]  Resizing causes crash (Illegal operation) when font is too small (Ctrl -)
-- [ ]  Pause doesnt work on debian (but it works on Ubuntu WSL)
+- [ ]  After resizing font and window video cannot be stoppped (works on WSL)
